@@ -38,10 +38,6 @@
       --indigo-d:  #4338ca;
       --indigo-50: #eef2ff;
       --indigo-100:#e0e7ff;
-      --green-bg:  #dcfce7;
-      --green-fg:  #166534;
-      --amber-bg:  #fef9c3;
-      --amber-fg:  #854d0e;
       --tag-bg:    #f1f5f9;
       --tag-fg:    #475569;
       --filter-bg: #f1f5f9;
@@ -67,10 +63,6 @@
       --indigo-d:  #6366f1;
       --indigo-50: #1e2456;
       --indigo-100:#252d6e;
-      --green-bg:  #052e16;
-      --green-fg:  #4ade80;
-      --amber-bg:  #3d1f00;
-      --amber-fg:  #fbbf24;
       --tag-bg:    #0f1a2e;
       --tag-fg:    #7d94b5;
       --filter-bg: #131d2e;
@@ -219,16 +211,13 @@
       background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
       padding: 1.25rem; display: flex; flex-direction: column; gap: .7rem;
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s;
-      border-top-width: 3px;
     }
-    article.card[data-badge="always"] { border-top-color: #22c55e; }
-    article.card[data-badge="trial"]  { border-top-color: #f59e0b; }
     article.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--line-2); }
     .card-top  { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
     .card-name { font-weight: 700; font-size: .95rem; display: flex; align-items: center; gap: .4rem; line-height: 1.3; }
     .badge     { padding: .14rem .52rem; border-radius: 999px; font-size: .7rem; font-weight: 600; white-space: nowrap; }
-    .badge.always { background: var(--green-bg); color: var(--green-fg); }
-    .badge.trial  { background: var(--amber-bg); color: var(--amber-fg); }
+    .badge.always { background: var(--tag-bg); color: var(--tag-fg); }
+    .badge.trial  { background: var(--tag-bg); color: var(--tag-fg); }
     .card-desc { color: var(--muted); font-size: .88rem; flex: 1; margin: 0; line-height: 1.6; }
     .tags { display: flex; flex-wrap: wrap; gap: .3rem; }
     .tag     { background: var(--tag-bg); color: var(--tag-fg); padding: .12rem .48rem; border-radius: 6px; font-size: .71rem; }
@@ -339,10 +328,9 @@
     /* ── Hidden / newly-added cards ── */
     article.card.is-hidden-provider { border-style: dashed; }
     .badge.new-provider {
-      background: #ede9fe; color: #5b21b6; font-size: .65rem; font-weight: 700;
+      background: var(--tag-bg); color: var(--tag-fg); font-size: .65rem; font-weight: 700;
       padding: .12rem .45rem; border-radius: 999px; letter-spacing: .03em;
     }
-    [data-theme="dark"] .badge.new-provider { background: #1e1b4b; color: #a78bfa; }
     .hidden-banner {
       grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between;
       gap: .75rem; padding: .65rem 1rem; border-radius: 12px;
