@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Key Manager — Local Toolkit</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root {
+      --bg: #f8fafc; --card: #ffffff; --line: #e2e8f0; --line-2: #cbd5e1;
+      --text: #1e293b; --muted: #64748b; --muted-2: #94a3b8;
+      --indigo: #4f46e5; --indigo-700: #4338ca; --indigo-50: #eef2ff; --indigo-fg: #4338ca;
+      --green-bg: #dcfce7; --green-fg: #166534;
+      --red-bg: #fef2f2; --red-fg: #991b1b; --red-line: #fecaca;
+      --radius: 14px; --shadow: 0 8px 24px rgba(15,23,42,.09);
+      --ok: #16a34a; --err: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --card: #1e293b; --line: #334155; --line-2: #475569;
+        --text: #f1f5f9; --muted: #94a3b8; --muted-2: #64748b;
+        --indigo-50: #1e1b4b; --indigo-fg: #a5b4fc;
+        --green-bg: #052e16; --green-fg: #4ade80;
+        --red-bg: #1c0a0a; --red-fg: #fca5a5; --red-line: #7f1d1d;
+        --shadow: 0 8px 24px rgba(0,0,0,.45);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--indigo); }
+
+    .wrap { max-width: 42rem; margin: 0 auto; padding: 0 1rem; }
+    .hidden { display: none !important; }
+
+    /* Header */
+    header { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+    header .wrap { display: flex; align-items: center; justify-content: space-between; padding: .85rem 1rem; gap: 1rem; }
+    .brand { font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: .45rem; white-space: nowrap; }
+    .lock-status { font-size: .8rem; color: var(--muted); display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .lock-btn {
+      background: none; border: 1px solid var(--line-2); border-radius: 8px;
+      padding: .28rem .6rem; font-size: .78rem; cursor: pointer; color: var(--muted); font-family: inherit;
+    }
+    .lock-btn:hover { background: var(--bg); color: var(--text); }
+
+    /* Screens */
+    .screen { padding: 2rem 1rem 5rem; }
+
+    /* Lock card */
+    .lock-card {
+      max-width: 26rem; margin: 2.5rem auto 0;
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 2rem; box-shadow: var(--shadow);
+    }
+    .lock-card h2 { margin: 0 0 .35rem; font-size: 1.2rem; }
+    .lock-card .sub { margin: 0 0 1.5rem; color: var(--muted); font-size: .88rem; }
+    .crypto-note { font-size: .74rem; color: var(--muted-2); margin: .9rem 0 0; text-align: center; }
+
+    /* Strength bar */
+    .strength-wrap { margin: .3rem 0 .9rem; }
+    .strength-bar { height: 4px; border-radius: 4px; background: var(--line); }
+    .strength-fill { height: 100%; border-radius: 4px; width: 0%; transition: width .2s, background .2s; background: var(--err); }
+    .strength-label { font-size: .72rem; color: var(--muted-2); margin-top: .25rem; }
+
+    /* Form fields */
+    .field { display: flex; flex-direction: column; gap: .28rem; margin-bottom: .85rem; }
+    .field label { font-size: .8rem; font-weight: 600; }
+    .field input, .field textarea, .field select {
+      width: 100%; padding: .52rem .7rem; border: 1px solid var(--line-2); border-radius: 10px;
+      font-size: .88rem; font-family: inherit; background: var(--card); color: var(--text); outline: none;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-50);
+    }
+    .field textarea { resize: vertical; min-height: 3rem; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+      font-size: .85rem; font-weight: 500; padding: .5rem 1rem; border-radius: 10px;
+      cursor: pointer; border: 1px solid transparent; text-decoration: none;
+      transition: background .12s, border-color .12s; white-space: nowrap; font-family: inherit;
+    }
+    .btn-primary { background: var(--indigo); color: #fff; }
+    .btn-primary:hover { background: var(--indigo-700); }
+    .btn-ghost { background: var(--card); color: var(--indigo-fg); border-color: var(--line-2); }
+    .btn-ghost:hover { background: var(--indigo-50); }
+    .btn-danger { background: var(--red-bg); color: var(--red-fg); border-color: var(--red-line); }
+    .btn-danger:hover { opacity: .85; }
+    .btn-sm { font-size: .78rem; padding: .3rem .65rem; border-radius: 8px; }
+    .btn-full { width: 100%; }
+
+    /* Alert */
+    .alert { padding: .6rem .85rem; border-radius: 10px; font-size: .82rem; margin-bottom: .85rem; }
+    .alert-err { background: var(--red-bg); color: var(--red-fg); border: 1px solid var(--red-line); }
+    .alert-ok { background: var(--green-bg); color: var(--green-fg); }
+
+    /* Notice bar */
+    .notice {
+      background: var(--indigo-50); color: var(--indigo-fg); border-radius: 10px;
+      padding: .6rem .9rem; font-size: .8rem; margin-bottom: 1.25rem;
+      display: flex; gap: .5rem; align-items: flex-start; line-height: 1.55;
+    }
+
+    /* Toolbar */
+    .toolbar { display: flex; gap: .55rem; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; }
+    .toolbar input {
+      flex: 1; min-width: 9rem; padding: .48rem .75rem; border: 1px solid var(--line-2);
+      border-radius: 999px; font-size: .88rem; background: var(--card); color: var(--text); outline: none;
+    }
+    .toolbar input:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-50); }
+
+    /* Key list */
+    .key-list { display: flex; flex-direction: column; gap: .7rem; }
+    .key-card {
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .45rem;
+    }
+    .key-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
+    .key-provider { font-weight: 600; font-size: .95rem; }
+    .key-var {
+      display: inline-block; font-size: .7rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: var(--indigo-50); color: var(--indigo-fg);
+      padding: .1rem .4rem; border-radius: 6px; margin-top: .15rem;
+    }
+    .key-value-row { display: flex; align-items: center; gap: .45rem; }
+    .key-masked {
+      flex: 1; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .82rem; color: var(--muted); background: var(--bg); padding: .32rem .6rem;
+      border-radius: 8px; border: 1px solid var(--line); overflow: hidden;
+      text-overflow: ellipsis; white-space: nowrap; cursor: pointer; user-select: none;
+    }
+    .key-masked:hover { border-color: var(--line-2); }
+    .key-masked.revealed { color: var(--text); user-select: text; }
+    .copy-flash { font-size: .72rem; font-weight: 600; color: var(--ok); white-space: nowrap; }
+    .key-note { font-size: .78rem; color: var(--muted-2); font-style: italic; }
+    .key-meta { font-size: .71rem; color: var(--muted-2); }
+
+    /* Empty state */
+    .empty { text-align: center; color: var(--muted); padding: 2.5rem 1rem; }
+    .empty p { margin: .4rem 0; }
+
+    /* Export panel */
+    .export-panel {
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 1.2rem; margin-top: 1.4rem;
+    }
+    .export-panel h3 { margin: 0 0 .85rem; font-size: .95rem; }
+    .export-tabs { display: flex; gap: .35rem; margin-bottom: .85rem; flex-wrap: wrap; }
+    .export-tab {
+      padding: .28rem .75rem; border-radius: 999px; font-size: .8rem; font-weight: 500;
+      cursor: pointer; border: 1px solid var(--line-2); background: var(--bg); color: var(--muted);
+      font-family: inherit;
+    }
+    .export-tab.active { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+    .export-out {
+      background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: .8rem .9rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .76rem;
+      white-space: pre; overflow-x: auto; max-height: 14rem; line-height: 1.65;
+    }
+    .export-actions { display: flex; gap: .5rem; margin-top: .75rem; flex-wrap: wrap; }
+
+    /* Sep */
+    hr.sep { border: none; border-top: 1px solid var(--line); margin: 1.1rem 0; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(15,23,42,.55); z-index: 50;
+      display: none; align-items: flex-start; justify-content: center;
+      padding: 1.5rem 1rem; overflow-y: auto;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--card); border-radius: 18px; width: 100%; max-width: 30rem; margin: auto;
+      box-shadow: 0 20px 60px rgba(15,23,42,.35); overflow: hidden;
+    }
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 1.25rem .5rem; gap: 1rem;
+    }
+    .modal-head h2 { margin: 0; font-size: 1.05rem; }
+    .x {
+      background: none; border: none; font-size: 1.5rem; line-height: 1; cursor: pointer;
+      color: var(--muted); padding: .1rem .4rem; border-radius: 8px; font-family: inherit; flex-shrink: 0;
+    }
+    .x:hover { background: var(--bg); color: var(--text); }
+    .modal-body { padding: .75rem 1.25rem 1.25rem; }
+    .modal-footer { display: flex; gap: .55rem; margin-top: .6rem; }
+    .modal-footer .btn-primary { flex: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">🔑 API Key Manager</div>
+    <div id="header-right" class="hidden"></div>
+  </div>
+</header>
+
+<!-- ── Lock screen ── -->
+<div id="screen-lock" class="screen">
+  <div class="lock-card">
+    <h2 id="lock-title"></h2>
+    <p class="sub" id="lock-desc"></p>
+    <div id="lock-alert" class="alert alert-err hidden"></div>
+    <div class="field">
+      <label for="passphrase">Passphrase</label>
+      <input id="passphrase" type="password" placeholder="Enter passphrase…" autocomplete="current-password" />
+    </div>
+    <div id="confirm-wrap">
+      <div class="field">
+        <label for="passphrase2">Confirm passphrase</label>
+        <input id="passphrase2" type="password" placeholder="Confirm passphrase…" autocomplete="new-password" />
+      </div>
+      <div class="strength-wrap">
+        <div class="strength-bar"><div id="strength-fill" class="strength-fill"></div></div>
+        <div id="strength-label" class="strength-label">Enter a passphrase</div>
+      </div>
+    </div>
+    <button id="lock-submit" class="btn btn-primary btn-full"></button>
+    <p class="crypto-note">AES-256-GCM · PBKDF2 200k rounds · Web Crypto API · no network requests</p>
+  </div>
+</div>
+
+<!-- ── Vault screen ── -->
+<div id="screen-vault" class="screen hidden">
+  <div class="wrap">
+    <div class="notice">
+      🔒
+      <span>Keys are encrypted locally — nothing is ever sent to a server. This file has no external requests.
+      <a href="https://github.com/rabah2026/free-ai-apis" target="_blank" rel="noopener noreferrer">View source ↗</a></span>
+    </div>
+
+    <div class="toolbar">
+      <input type="search" id="vault-search" placeholder="Search keys…" aria-label="Search keys" autocomplete="off" />
+      <button id="add-btn" class="btn btn-primary btn-sm">+ Add key</button>
+      <button id="export-toggle" class="btn btn-ghost btn-sm">Export ↓</button>
+    </div>
+
+    <div id="key-list" class="key-list" role="list" aria-label="Stored API keys"></div>
+
+    <div id="export-panel" class="export-panel hidden">
+      <h3>Export keys</h3>
+      <div class="export-tabs">
+        <button class="export-tab active" data-fmt=".env">.env</button>
+        <button class="export-tab" data-fmt="shell">Shell export</button>
+        <button class="export-tab" data-fmt="json">JSON</button>
+      </div>
+      <div id="export-out" class="export-out"></div>
+      <div class="export-actions">
+        <button id="copy-export" class="btn btn-ghost btn-sm">Copy</button>
+        <button id="dl-export" class="btn btn-ghost btn-sm">Download file</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Add / Edit modal ── -->
+<div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modal-title">Add API key</h2>
+      <button id="modal-close" class="x" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="modal-alert" class="alert alert-err hidden"></div>
+
+      <div id="quick-wrap" class="field">
+        <label for="quick-sel">Quick-add a known provider</label>
+        <select id="quick-sel">
+          <option value="">— select to auto-fill —</option>
+        </select>
+      </div>
+      <hr id="quick-sep" class="sep" />
+
+      <div class="field">
+        <label for="f-provider">Provider name *</label>
+        <input id="f-provider" type="text" placeholder="e.g. Groq" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="f-varname">Environment variable name *</label>
+        <input id="f-varname" type="text" placeholder="e.g. GROQ_API_KEY" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="field">
+        <label for="f-key">API key *</label>
+        <input id="f-key" type="password" placeholder="Paste your key…" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="field">
+        <label for="f-note">Note (optional)</label>
+        <input id="f-note" type="text" placeholder="e.g. Work project · expires Dec 2025" autocomplete="off" />
+      </div>
+
+      <div class="modal-footer">
+        <button id="modal-save" class="btn btn-primary">Save key</button>
+        <button id="modal-delete" class="btn btn-danger btn-sm hidden">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ── Provider registry (mirrors main site) ── */
+const KNOWN = [
+  { name: 'Google Gemini',         emoji: '🟡', varName: 'GEMINI_API_KEY' },
+  { name: 'Groq',                  emoji: '⚡', varName: 'GROQ_API_KEY' },
+  { name: 'OpenRouter',            emoji: '🔀', varName: 'OPENROUTER_API_KEY' },
+  { name: 'Cloudflare Workers AI', emoji: '☁️', varName: 'CLOUDFLARE_API_KEY' },
+  { name: 'Cohere',                emoji: '🧲', varName: 'COHERE_API_KEY' },
+  { name: 'Hugging Face',          emoji: '🤗', varName: 'HUGGINGFACE_API_KEY' },
+  { name: 'Tavily',                emoji: '🌐', varName: 'TAVILY_API_KEY' },
+  { name: 'ElevenLabs',            emoji: '🔊', varName: 'ELEVENLABS_API_KEY' },
+  { name: 'Mistral AI',            emoji: '🌪',  varName: 'MISTRAL_API_KEY' },
+  { name: 'xAI Grok',              emoji: '𝕏',  varName: 'XAI_API_KEY' },
+  { name: 'OpenAI',                emoji: '🟢', varName: 'OPENAI_API_KEY' },
+  { name: 'Anthropic Claude',      emoji: '🔶', varName: 'ANTHROPIC_API_KEY' },
+  { name: 'DeepSeek',              emoji: '🐋', varName: 'DEEPSEEK_API_KEY' },
+  { name: 'Together AI',           emoji: '🤝', varName: 'TOGETHER_API_KEY' },
+  { name: 'Perplexity',            emoji: '🔍', varName: 'PERPLEXITY_API_KEY' },
+  { name: 'AssemblyAI',            emoji: '🎤', varName: 'ASSEMBLYAI_API_KEY' },
+  { name: 'Stability AI',          emoji: '🎨', varName: 'STABILITY_API_KEY' },
+  { name: 'Cerebras',              emoji: '🧠', varName: 'CEREBRAS_API_KEY' },
+  { name: 'Fireworks AI',          emoji: '🎆', varName: 'FIREWORKS_API_KEY' },
+  { name: 'Fal.ai',                emoji: '🌅', varName: 'FAL_KEY' },
+  { name: 'NVIDIA NIM',            emoji: '🟩', varName: 'NVIDIA_API_KEY' },
+  { name: 'AI21 Labs',             emoji: '🔵', varName: 'AI21_API_KEY' },
+  { name: 'Replicate',             emoji: '♻️', varName: 'REPLICATE_API_TOKEN' },
+];
+
+/* ── Crypto ── */
+const SALT_LS  = 'akm_salt';
+const VAULT_LS = 'akm_vault';
+const te = new TextEncoder(), td = new TextDecoder();
+
+async function deriveKey(passphrase, salt) {
+  const raw = await crypto.subtle.importKey('raw', te.encode(passphrase), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: 200_000, hash: 'SHA-256' },
+    raw, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+  );
+}
+
+async function encryptVault(data, key) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, te.encode(JSON.stringify(data)));
+  const out = new Uint8Array(12 + ct.byteLength);
+  out.set(iv); out.set(new Uint8Array(ct), 12);
+  return btoa(String.fromCharCode(...out));
+}
+
+async function decryptVault(b64, key) {
+  const buf  = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: buf.slice(0, 12) }, key, buf.slice(12));
+  return JSON.parse(td.decode(plain));
+}
+
+/* ── State ── */
+let aesKey = null;
+let vault  = [];
+let editId = null;
+let exportFmt = '.env';
+let searchTerm = '';
+
+/* ── DOM helpers ── */
+const $  = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+function el(tag, attrs = {}, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') n.className = v;
+    else if (k === 'text') n.textContent = v;
+    else if (k.startsWith('on') && typeof v === 'function') n.addEventListener(k.slice(2), v);
+    else if (v != null) n.setAttribute(k, v);
+  }
+  kids.forEach(c => c != null && n.append(c));
+  return n;
+}
+
+/* ── Persist ── */
+async function persist() {
+  localStorage.setItem(VAULT_LS, await encryptVault(vault, aesKey));
+}
+
+/* ── Utilities ── */
+function maskKey(k) {
+  if (k.length <= 8) return '••••••••';
+  return k.slice(0, 5) + '•••••••••' + k.slice(-4);
+}
+
+function passStrength(p) {
+  let s = 0;
+  if (p.length >= 10) s++;
+  if (p.length >= 16) s++;
+  if (/[A-Z]/.test(p)) s++;
+  if (/[0-9]/.test(p)) s++;
+  if (/[^A-Za-z0-9]/.test(p)) s++;
+  return s;
+}
+
+/* ── Render vault ── */
+function renderVault() {
+  const list = $('#key-list');
+  list.textContent = '';
+  const term = searchTerm.trim().toLowerCase();
+  const shown = vault.filter(e =>
+    !term ||
+    e.provider.toLowerCase().includes(term) ||
+    e.varName.toLowerCase().includes(term) ||
+    (e.note || '').toLowerCase().includes(term)
+  );
+
+  if (shown.length === 0) {
+    const empty = el('div', { class: 'empty' });
+    empty.append(el('p', { text: vault.length === 0 ? 'No keys yet.' : 'No keys match.' }));
+    if (vault.length === 0) {
+      empty.append(el('button', {
+        class: 'btn btn-primary btn-sm', style: 'margin-top:.5rem', text: '+ Add your first key',
+        onclick: openAdd
+      }));
+    }
+    list.append(empty);
+    refreshExport();
+    return;
+  }
+
+  shown.forEach(entry => {
+    let copyTimer;
+    const flash = el('span', { class: 'copy-flash hidden', text: '✓ Copied' });
+
+    const masked = el('div', {
+      class: 'key-masked', title: 'Click to reveal / hide', text: maskKey(entry.key),
+      onclick() {
+        const revealed = this.classList.toggle('revealed');
+        this.textContent = revealed ? entry.key : maskKey(entry.key);
+      }
+    });
+
+    const card = el('article', { class: 'key-card', role: 'listitem', 'data-id': entry.id },
+      el('div', { class: 'key-card-top' },
+        el('div', {},
+          el('div', { class: 'key-provider', text: (entry.emoji ? entry.emoji + ' ' : '') + entry.provider }),
+          el('code', { class: 'key-var', text: entry.varName })
+        ),
+        el('button', { class: 'btn btn-ghost btn-sm', text: 'Edit', onclick: () => openEdit(entry.id) })
+      ),
+      el('div', { class: 'key-value-row' },
+        masked,
+        el('button', {
+          class: 'btn btn-ghost btn-sm', text: 'Copy',
+          async onclick() {
+            try {
+              await navigator.clipboard.writeText(entry.key);
+              flash.classList.remove('hidden');
+              clearTimeout(copyTimer);
+              copyTimer = setTimeout(() => flash.classList.add('hidden'), 2000);
+            } catch { alert('Copy failed — reveal the key and copy manually.'); }
+          }
+        }),
+        flash
+      ),
+      entry.note ? el('div', { class: 'key-note', text: '📝 ' + entry.note }) : null,
+      el('div', { class: 'key-meta', text: 'Added ' + new Date(entry.added).toLocaleDateString() })
+    );
+    list.append(card);
+  });
+
+  refreshExport();
+}
+
+/* ── Export ── */
+function buildExport(fmt) {
+  if (vault.length === 0) return '# No keys stored yet.';
+  if (fmt === '.env')   return vault.map(e => `${e.varName}=${e.key}`).join('\n');
+  if (fmt === 'shell')  return vault.map(e => `export ${e.varName}="${e.key}"`).join('\n');
+  if (fmt === 'json')   return JSON.stringify(Object.fromEntries(vault.map(e => [e.varName, e.key])), null, 2);
+  return '';
+}
+
+function refreshExport() {
+  $('#export-out').textContent = buildExport(exportFmt);
+}
+
+/* ── Modal helpers ── */
+const modal = $('#modal');
+let lastFocus;
+
+function openModal() {
+  lastFocus = document.activeElement;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  hide($('#modal-alert'));
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  editId = null;
+  lastFocus?.focus();
+}
+
+function openAdd() {
+  editId = null;
+  $('#modal-title').textContent = 'Add API key';
+  ['#f-provider', '#f-varname', '#f-key', '#f-note'].forEach(s => { $(s).value = ''; });
+  $('#quick-sel').value = '';
+  $('#quick-wrap').classList.remove('hidden');
+  $('#quick-sep').classList.remove('hidden');
+  $('#modal-delete').classList.add('hidden');
+  openModal();
+  setTimeout(() => $('#quick-sel').focus(), 40);
+}
+
+function openEdit(id) {
+  const e = vault.find(x => x.id === id);
+  if (!e) return;
+  editId = id;
+  $('#modal-title').textContent = 'Edit — ' + e.provider;
+  $('#f-provider').value = e.provider;
+  $('#f-varname').value  = e.varName;
+  $('#f-key').value      = e.key;
+  $('#f-note').value     = e.note || '';
+  $('#quick-wrap').classList.add('hidden');
+  $('#quick-sep').classList.add('hidden');
+  $('#modal-delete').classList.remove('hidden');
+  openModal();
+  setTimeout(() => $('#f-key').focus(), 40);
+}
+
+async function saveEntry() {
+  const provider = $('#f-provider').value.trim();
+  const varName  = $('#f-varname').value.trim().toUpperCase().replace(/\s+/g, '_').replace(/[^A-Z0-9_]/g, '');
+  const key      = $('#f-key').value.trim();
+  const note     = $('#f-note').value.trim();
+
+  const alertEl = $('#modal-alert');
+  if (!provider || !varName || !key) {
+    alertEl.textContent = 'Provider name, variable name, and API key are all required.';
+    alertEl.classList.remove('hidden');
+    return;
+  }
+
+  const known = KNOWN.find(k => k.varName === varName || k.name.toLowerCase() === provider.toLowerCase());
+
+  if (editId) {
+    const i = vault.findIndex(e => e.id === editId);
+    if (i !== -1) vault[i] = { ...vault[i], provider, varName, key, note, emoji: vault[i].emoji || known?.emoji || '' };
+  } else {
+    vault.push({ id: crypto.randomUUID(), provider, varName, key, note, emoji: known?.emoji || '', added: Date.now() });
+  }
+
+  await persist();
+  renderVault();
+  updateHeaderCount();
+  closeModal();
+}
+
+async function deleteEntry() {
+  if (!editId) return;
+  if (!confirm('Delete this key? This cannot be undone.')) return;
+  vault = vault.filter(e => e.id !== editId);
+  await persist();
+  renderVault();
+  updateHeaderCount();
+  closeModal();
+}
+
+/* ── Header count ── */
+function updateHeaderCount() {
+  const span = $('#hdr-count');
+  if (span) span.textContent = vault.length + ' key' + (vault.length !== 1 ? 's' : '');
+}
+
+/* ── Lock screen ── */
+function hasVault() { return !!localStorage.getItem(VAULT_LS); }
+
+function showLock() {
+  const existing = hasVault();
+  $('#lock-title').textContent   = existing ? '🔐 Unlock vault' : '🔐 Create vault';
+  $('#lock-desc').textContent    = existing
+    ? 'Enter your passphrase to decrypt your key vault.'
+    : 'Set a strong passphrase. It is never stored — if you forget it your keys cannot be recovered.';
+  $('#lock-submit').textContent  = existing ? 'Unlock' : 'Create vault';
+
+  const cw = $('#confirm-wrap');
+  existing ? cw.classList.add('hidden') : cw.classList.remove('hidden');
+
+  $('#screen-lock').classList.remove('hidden');
+  $('#screen-vault').classList.add('hidden');
+  const hr = $('#header-right');
+  hr.textContent = '';
+  hr.classList.add('hidden');
+  setTimeout(() => $('#passphrase').focus(), 50);
+}
+
+async function handleLockSubmit() {
+  const pass    = $('#passphrase').value;
+  const alertEl = $('#lock-alert');
+  alertEl.classList.add('hidden');
+
+  if (!pass) { alertEl.textContent = 'Enter your passphrase.'; alertEl.classList.remove('hidden'); return; }
+
+  if (!hasVault()) {
+    const pass2 = $('#passphrase2').value;
+    if (pass !== pass2)            { alertEl.textContent = 'Passphrases do not match.'; alertEl.classList.remove('hidden'); return; }
+    if (passStrength(pass) < 2)    { alertEl.textContent = 'Passphrase is too weak — make it longer or add numbers and symbols.'; alertEl.classList.remove('hidden'); return; }
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    localStorage.setItem(SALT_LS, btoa(String.fromCharCode(...salt)));
+    aesKey = await deriveKey(pass, salt);
+    vault  = [];
+    await persist();
+  } else {
+    const saltB64 = localStorage.getItem(SALT_LS);
+    const salt    = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+    try {
+      aesKey = await deriveKey(pass, salt);
+      vault  = await decryptVault(localStorage.getItem(VAULT_LS), aesKey);
+    } catch {
+      alertEl.textContent = 'Wrong passphrase — decryption failed.';
+      alertEl.classList.remove('hidden');
+      aesKey = null;
+      return;
+    }
+  }
+
+  $('#passphrase').value  = '';
+  $('#passphrase2').value = '';
+
+  $('#screen-lock').classList.add('hidden');
+  $('#screen-vault').classList.remove('hidden');
+
+  const hr = $('#header-right');
+  hr.className = 'lock-status';
+  hr.append(
+    el('span', { id: 'hdr-count', text: vault.length + ' key' + (vault.length !== 1 ? 's' : '') }),
+    el('button', { class: 'lock-btn', text: '🔒 Lock', onclick: lockVault })
+  );
+
+  renderVault();
+}
+
+function lockVault() {
+  aesKey = null;
+  vault  = [];
+  showLock();
+}
+
+/* ── Strength meter ── */
+$('#passphrase').addEventListener('input', () => {
+  if (hasVault()) return;
+  const s = passStrength($('#passphrase').value);
+  const fill = $('#strength-fill');
+  const colors = ['#dc2626','#dc2626','#f59e0b','#22c55e','#16a34a','#15803d'];
+  const labels = ['Too short','Weak','Fair','Good','Strong','Very strong'];
+  fill.style.width      = Math.max(5, s / 5 * 100) + '%';
+  fill.style.background = colors[s] || '#dc2626';
+  $('#strength-label').textContent = labels[s] || '';
+});
+
+/* ── Quick-add select ── */
+const qs = $('#quick-sel');
+KNOWN.forEach(p => qs.append(el('option', { value: p.varName, text: p.emoji + ' ' + p.name })));
+qs.addEventListener('change', () => {
+  const k = KNOWN.find(x => x.varName === qs.value);
+  if (!k) return;
+  $('#f-provider').value = k.name;
+  $('#f-varname').value  = k.varName;
+  setTimeout(() => $('#f-key').focus(), 40);
+});
+
+/* ── Export panel ── */
+$('#export-toggle').addEventListener('click', () => {
+  const panel   = $('#export-panel');
+  const closing = !panel.classList.contains('hidden');
+  panel.classList.toggle('hidden', closing);
+  $('#export-toggle').textContent = closing ? 'Export ↓' : 'Export ↑';
+  if (!closing) refreshExport();
+});
+
+$$('.export-tab').forEach(btn => btn.addEventListener('click', () => {
+  $$('.export-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  exportFmt = btn.dataset.fmt;
+  refreshExport();
+}));
+
+$('#copy-export').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(buildExport(exportFmt));
+    const btn = $('#copy-export');
+    btn.textContent = 'Copied ✓';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+  } catch { alert('Copy failed.'); }
+});
+
+$('#dl-export').addEventListener('click', () => {
+  const names = { '.env': '.env', 'shell': 'api-keys.sh', 'json': 'api-keys.json' };
+  const blob  = new Blob([buildExport(exportFmt)], { type: 'text/plain' });
+  const a     = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = names[exportFmt] || 'api-keys.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* ── Wire modal buttons ── */
+$('#lock-submit').addEventListener('click', handleLockSubmit);
+['#passphrase','#passphrase2'].forEach(s => {
+  $(s).addEventListener('keydown', e => { if (e.key === 'Enter') handleLockSubmit(); });
+});
+$('#add-btn').addEventListener('click', openAdd);
+$('#modal-close').addEventListener('click', closeModal);
+$('#modal-save').addEventListener('click', saveEntry);
+$('#modal-delete').addEventListener('click', deleteEntry);
+$('#vault-search').addEventListener('input', e => { searchTerm = e.target.value; renderVault(); });
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+/* ── Focus trap ── */
+modal.addEventListener('keydown', e => {
+  if (e.key !== 'Tab') return;
+  const nodes = Array.from(modal.querySelectorAll('button:not([disabled]),input,select,textarea,a[href]'))
+                     .filter(n => n.offsetParent !== null);
+  if (!nodes.length) return;
+  const [first, last] = [nodes[0], nodes[nodes.length - 1]];
+  if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+  else            { if (document.activeElement === last)  { e.preventDefault(); first.focus(); } }
+});
+
+/* ── Boot ── */
+showLock();
+</script>
+</body>
+</html>
