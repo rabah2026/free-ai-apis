@@ -7,6 +7,7 @@
 
 const CATEGORIES = ['all', 'LLM', 'Image', 'Audio', 'Search', 'Embedding', 'Code'];
 const CATEGORY_LABELS = { all: 'All', LLM: 'LLM / Chat', Image: 'Image', Audio: 'Audio', Search: 'Search', Embedding: 'Embedding', Code: 'Code' };
+const LAST_UPDATED = 'June 2026';
 
 /* Each provider's `test` config drives the live tester. `kind` selects how the
  * request is built and how the response is parsed. `curl` is the copy-paste CLI
@@ -123,8 +124,8 @@ const PROVIDERS = [
   -d '{"model":"grok-2-latest","messages":[{"role":"user","content":"Say hello in one sentence."}]}'`
   },
   {
-    id: 'openai', name: 'OpenAI', emoji: '🟢', badge: 'trial', badgeLabel: 'Trial credits',
-    desc: 'Free credits on new accounts. GPT-4o, DALL·E 3, Whisper, TTS, Embeddings. Pay-as-you-go after credits run out.',
+    id: 'openai', name: 'OpenAI', emoji: '🟢', badge: 'trial', badgeLabel: 'Pay-as-you-go',
+    desc: 'No free tier — payment required from the first API call. GPT-4o, DALL·E 3, Whisper, TTS, and Embeddings. gpt-4o-mini is among the cheapest capable models available.',
     tags: ['LLM', 'Image', 'Audio', 'Embedding', 'Code'], chips: ['GPT-4o'],
     keyUrl: 'https://platform.openai.com/api-keys', docsUrl: 'https://platform.openai.com/docs/quickstart',
     test: { kind: 'chat', endpoint: 'https://api.openai.com/v1/chat/completions', model: 'gpt-4o-mini' },
@@ -236,7 +237,7 @@ const PROVIDERS = [
     desc: 'Free credits on signup. FLUX, Stable Diffusion, and video generation via a fast serverless GPU platform.',
     tags: ['Image'], chips: ['FLUX', 'Video', 'Serverless'],
     keyUrl: 'https://fal.ai/dashboard/keys', docsUrl: 'https://fal.ai/docs',
-    test: { kind: 'chat', endpoint: 'https://fal.run/fal-ai/any-llm', model: 'google/gemini-flash-1-5' },
+    test: { kind: 'fal', endpoint: 'https://fal.run/fal-ai/any-llm', model: 'google/gemini-flash-1-5' },
     curl: `curl https://fal.run/fal-ai/flux/schnell \\
   -H "Authorization: Key $API_KEY" \\
   -H "Content-Type: application/json" \\
@@ -272,12 +273,12 @@ const PROVIDERS = [
     desc: 'Free credits on signup. Run open-source models including FLUX, Stable Diffusion, Llama, Whisper, and thousands more via API.',
     tags: ['LLM', 'Image', 'Audio'], chips: ['Open-source', 'FLUX', 'Whisper'],
     keyUrl: 'https://replicate.com/account/api-tokens', docsUrl: 'https://replicate.com/docs/get-started/overview',
-    test: { kind: 'chat', endpoint: 'https://api.replicate.com/v1/models/meta/meta-llama-3-8b-instruct/predictions', model: '' },
-    curl: `# Run FLUX image generation
-curl https://api.replicate.com/v1/models/black-forest-labs/flux-schnell/predictions \\
+    test: { kind: 'replicate', endpoint: 'https://api.replicate.com/v1/models/meta/meta-llama-3-8b-instruct/predictions' },
+    curl: `curl -X POST https://api.replicate.com/v1/models/meta/meta-llama-3-8b-instruct/predictions \\
   -H "Authorization: Bearer $API_KEY" \\
   -H "Content-Type: application/json" \\
-  -d '{"input":{"prompt":"A cute robot reading a book, digital art"}}'`
+  -H "Prefer: wait" \\
+  -d '{"input":{"prompt":"Say hello in one sentence."}}'`
   }
 ];
 
@@ -290,7 +291,6 @@ function el(tag, attrs = {}, ...children) {
   for (const [k, v] of Object.entries(attrs)) {
     if (k === 'class') node.className = v;
     else if (k === 'text') node.textContent = v;
-    else if (k === 'html') node.innerHTML = v;
     else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2), v);
     else if (v !== null && v !== undefined) node.setAttribute(k, v);
   }
@@ -312,6 +312,15 @@ function renderFilters() {
       onclick: () => setCategory(cat)
     });
     host.append(btn);
+  });
+  host.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const btns = [...host.querySelectorAll('.filter-btn')];
+    const i = btns.indexOf(document.activeElement);
+    if (i === -1) return;
+    e.preventDefault();
+    const next = e.key === 'ArrowRight' ? (i + 1) % btns.length : (i - 1 + btns.length) % btns.length;
+    btns[next].focus();
   });
 }
 
@@ -364,10 +373,20 @@ function renderGrid() {
     return hay.includes(term);
   });
 
+  const liveEl = $('#result-count');
   if (matches.length === 0) {
-    host.append(el('div', { class: 'empty', text: 'No providers match your search. Try a different term or category.' }));
+    if (liveEl) liveEl.textContent = 'No providers found.';
+    const empty = el('div', { class: 'empty' });
+    empty.append(el('p', { text: 'No providers match your search. Try a different term or category.' }));
+    empty.append(el('button', {
+      class: 'btn btn-ghost', style: 'margin-top:.75rem',
+      text: 'Clear search & filters',
+      onclick: () => { searchTerm = ''; $('#search').value = ''; setCategory('all'); }
+    }));
+    host.append(empty);
     return;
   }
+  if (liveEl) liveEl.textContent = `${matches.length} provider${matches.length === 1 ? '' : 's'} shown.`;
 
   // Render main providers first, hidden providers after — both always visible.
   const main   = matches.filter(p => !p.hidden);
@@ -456,6 +475,16 @@ function buildRequest(p, key, prompt, extra) {
       options.headers = { 'Content-Type': 'application/json', 'Authorization': key };
       options.body = JSON.stringify({ audio_url: 'https://assembly.ai/wildfires.mp3' });
       break;
+    case 'fal':
+      url = t.endpoint;
+      options.headers = { 'Content-Type': 'application/json', 'Authorization': 'Key ' + key };
+      options.body = JSON.stringify({ model: t.model, messages: [{ role: 'user', content: prompt }], max_tokens: 512 });
+      break;
+    case 'replicate':
+      url = t.endpoint;
+      options.headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key, 'Prefer': 'wait' };
+      options.body = JSON.stringify({ input: { prompt } });
+      break;
   }
   return { url, options };
 }
@@ -469,6 +498,8 @@ function parseReply(kind, data) {
     case 'cloudflare': return data?.result?.response;
     case 'tavily': return data?.answer || (data?.results ? data.results.slice(0, 3).map(r => `• ${r.title}\n  ${r.url}`).join('\n') : null);
     case 'transcript': return `Transcript job created.\nID: ${data?.id}\nStatus: ${data?.status}\n\nTranscription runs asynchronously — use the CLI command below and poll GET /v2/transcript/${data?.id} for the finished text.`;
+    case 'fal': return data?.choices?.[0]?.message?.content;
+    case 'replicate': return Array.isArray(data?.output) ? data.output.join('') : (data?.output || `Prediction created (async).\nID: ${data?.id}\nStatus: ${data?.status}\n\nPoll for result:\nGET ${data?.urls?.get}`);
     default: return null;
   }
 }
@@ -660,14 +691,29 @@ function showError(result, status, statusText, detail) {
   result.append(box);
 }
 
+function trapFocus(e) {
+  if (e.key !== 'Tab') return;
+  const focusable = Array.from(modal.querySelectorAll(
+    'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])'
+  )).filter(n => n.offsetParent !== null);
+  if (!focusable.length) return;
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+  else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
+}
+
 /* ---------- wire up ---------- */
 function init() {
+  const updEl = document.querySelector('.updated');
+  if (updEl) updEl.textContent = 'Updated ' + LAST_UPDATED;
+
   renderFilters();
   renderGrid();
 
   $('#search').addEventListener('input', (e) => { searchTerm = e.target.value; renderGrid(); });
   $('#modal-close').addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  modal.addEventListener('keydown', trapFocus);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
 }
 
