@@ -3,429 +3,263 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free AI APIs — Always free or free-tier from reputable providers</title>
-  <meta name="description" content="A curated directory of free AI APIs from reputable providers. Always free or offers a genuine free tier — no tricks." />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Free AI APIs — Always-free & free-tier APIs from reputable providers</title>
+  <meta name="description" content="A curated, up-to-date directory of free AI APIs from reputable providers. Direct sign-up links, copy-paste CLI commands, guided setup, and a built-in tester to try your key live." />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="canonical" href="https://free-ai-apis.vercel.app/" />
+  <!-- Open Graph / social preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://free-ai-apis.vercel.app/" />
+  <meta property="og:title" content="Free AI APIs — Always-free & free-tier APIs from reputable providers" />
+  <meta property="og:description" content="A curated directory of free AI APIs. Direct sign-up links, copy-paste CLI commands, and a live in-browser tester." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Free AI APIs" />
+  <meta name="twitter:description" content="Curated directory of free AI APIs — sign-up links, CLI commands, live tester." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>⚡</text></svg>" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    * { font-family: 'Inter', sans-serif; }
-    .card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-    .badge-always { background:#dcfce7; color:#166534; }
-    .badge-offer  { background:#fef9c3; color:#854d0e; }
-    .tag          { background:#f1f5f9; color:#475569; }
-    .filter-btn.active { background:#4f46e5; color:#fff; }
+    :root {
+      --bg: #f8fafc; --card: #ffffff; --line: #e2e8f0; --line-2: #cbd5e1;
+      --text: #1e293b; --muted: #64748b; --muted-2: #94a3b8;
+      --indigo: #4f46e5; --indigo-700: #4338ca; --indigo-50: #eef2ff;
+      --green-bg: #dcfce7; --green-fg: #166534;
+      --amber-bg: #fef9c3; --amber-fg: #854d0e;
+      --tag-bg: #f1f5f9; --tag-fg: #475569;
+      --filter-bg: #e2e8f0; --filter-fg: #334155; --filter-hover: #cbd5e1;
+      --radius: 16px; --shadow: 0 8px 24px rgba(15,23,42,.08);
+      --ok: #16a34a; --err: #dc2626;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+      line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 64rem; margin: 0 auto; padding: 0 1rem; }
+
+    /* Header */
+    header.site { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+    header.site .wrap { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1rem; }
+    .brand { display: flex; align-items: center; gap: .5rem; font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em; }
+    .brand .bolt { font-size: 1.4rem; user-select: none; }
+    .updated { font-size: .72rem; color: var(--muted-2); }
+
+    /* Hero */
+    .hero { text-align: center; padding: 2.75rem 1rem 1rem; }
+    .hero h1 { font-size: clamp(1.9rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -.02em; margin: 0 0 .6rem; }
+    .hero p { color: var(--muted); font-size: 1.05rem; max-width: 38rem; margin: 0 auto; }
+
+    /* Search + filters */
+    .controls { margin: 1.6rem auto 0; max-width: 40rem; }
+    .search { position: relative; }
+    .search input {
+      width: 100%; padding: .7rem 1rem .7rem 2.5rem; font-size: .95rem;
+      border: 1px solid var(--line-2); border-radius: 999px; background: var(--card); color: var(--text);
+      outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .search input:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-50); }
+    .search svg { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: var(--muted-2); }
+    .filters { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin-top: 1rem; }
+    .filter-btn {
+      padding: .4rem 1rem; border-radius: 999px; font-size: .85rem; font-weight: 500; cursor: pointer;
+      border: 1px solid var(--line-2); background: var(--filter-bg); color: var(--filter-fg); transition: background .12s, color .12s, border-color .12s;
+    }
+    .filter-btn:hover { background: var(--filter-hover); }
+    .filter-btn.active { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+
+    /* Grid */
+    main.grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; padding: 1.75rem 1rem 5rem; max-width: 64rem; margin: 0 auto; }
+    @media (min-width: 640px) { main.grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { main.grid { grid-template-columns: repeat(3, 1fr); } }
+
+    article.card {
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 1.25rem; display: flex; flex-direction: column; gap: .75rem;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    article.card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+    .card-name { font-weight: 600; display: flex; align-items: center; gap: .4rem; }
+    .badge { padding: .15rem .55rem; border-radius: 999px; font-size: .72rem; font-weight: 600; white-space: nowrap; }
+    .badge.always { background: var(--green-bg); color: var(--green-fg); }
+    .badge.trial { background: var(--amber-bg); color: var(--amber-fg); }
+    .card-desc { color: var(--muted); font-size: .9rem; flex: 1; margin: 0; }
+    .tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+    .tag { background: var(--tag-bg); color: var(--tag-fg); padding: .12rem .5rem; border-radius: 6px; font-size: .72rem; }
+    .tag.cat { background: var(--indigo-50); color: var(--indigo-700); font-weight: 600; }
+
+    .card-actions { display: flex; gap: .5rem; margin-top: .25rem; }
+    .btn {
+      flex: 1; text-align: center; font-size: .85rem; font-weight: 500; padding: .5rem .6rem; border-radius: 10px;
+      cursor: pointer; border: 1px solid transparent; text-decoration: none; transition: background .12s, border-color .12s; white-space: nowrap;
+    }
+    .btn-primary { background: var(--indigo); color: #fff; }
+    .btn-primary:hover { background: var(--indigo-700); }
+    .btn-ghost { background: var(--card); color: var(--indigo-700); border-color: var(--line-2); }
+    .btn-ghost:hover { background: var(--indigo-50); }
+    .card-links { display: flex; gap: .75rem; font-size: .78rem; }
+    .card-links a { color: var(--muted); text-decoration: none; }
+    .card-links a:hover { color: var(--indigo); text-decoration: underline; }
+
+    /* Empty state */
+    .empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 3rem 1rem; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(15,23,42,.55); z-index: 50;
+      display: none; align-items: flex-start; justify-content: center; padding: 1.5rem 1rem; overflow-y: auto;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--card); border-radius: 18px; width: 100%; max-width: 40rem; margin: auto;
+      box-shadow: 0 20px 60px rgba(15,23,42,.35); overflow: hidden;
+    }
+    .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.25rem 0; }
+    .modal-head h2 { margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: .5rem; }
+    .modal-head .badge { margin-top: .2rem; }
+    .x { background: none; border: none; font-size: 1.5rem; line-height: 1; cursor: pointer; color: var(--muted); padding: .1rem .4rem; border-radius: 8px; }
+    .x:hover { background: var(--bg); color: var(--text); }
+    .modal-body { padding: 1rem 1.25rem 1.25rem; }
+    .section-label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted-2); margin: 1.1rem 0 .4rem; }
+    .steps { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: .88rem; display: flex; flex-direction: column; gap: .25rem; }
+    .steps a { color: var(--indigo-700); }
+    .privacy { font-size: .76rem; color: var(--muted-2); margin-top: .5rem; display: flex; gap: .35rem; align-items: center; }
+
+    .field { display: flex; flex-direction: column; gap: .3rem; margin-top: .6rem; }
+    .field label { font-size: .8rem; font-weight: 600; color: var(--text); }
+    .field input, .field textarea {
+      width: 100%; padding: .55rem .7rem; border: 1px solid var(--line-2); border-radius: 10px;
+      font-size: .88rem; font-family: inherit; background: var(--card); color: var(--text); outline: none;
+    }
+    .field textarea { resize: vertical; min-height: 3.2rem; }
+    .field input:focus, .field textarea:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-50); }
+
+    .run-row { display: flex; gap: .6rem; align-items: center; margin-top: .9rem; flex-wrap: wrap; }
+    .run-row .btn-primary { flex: 0 0 auto; padding: .55rem 1.1rem; }
+    .status { font-size: .8rem; font-weight: 600; }
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--err); }
+    .status.run { color: var(--muted); }
+
+    .result { margin-top: .9rem; display: none; }
+    .result.show { display: block; }
+    .reply-box {
+      background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: .8rem .9rem;
+      font-size: .9rem; white-space: pre-wrap; word-break: break-word; color: var(--text); max-height: 18rem; overflow: auto;
+    }
+    .reply-box.error { border-color: #fecaca; background: #fef2f2; color: #991b1b; }
+    .result img, .result audio { margin-top: .6rem; max-width: 100%; border-radius: 10px; }
+    details.raw { margin-top: .5rem; }
+    details.raw summary { cursor: pointer; font-size: .78rem; color: var(--muted); }
+    details.raw pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: .8rem; overflow: auto; font-size: .76rem; max-height: 14rem; margin: .4rem 0 0; }
+
+    /* Code block */
+    .code-wrap { position: relative; margin-top: .4rem; }
+    pre.code {
+      background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: .85rem 2.6rem .85rem .9rem;
+      overflow-x: auto; font-size: .78rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      margin: 0; line-height: 1.55;
+    }
+    pre.code .tok-flag { color: #93c5fd; }
+    .copy-btn {
+      position: absolute; top: .5rem; right: .5rem; background: #1e293b; color: #cbd5e1; border: 1px solid #334155;
+      border-radius: 7px; padding: .25rem .5rem; font-size: .72rem; cursor: pointer; transition: background .12s;
+    }
+    .copy-btn:hover { background: #334155; color: #fff; }
+    .copy-btn.copied { color: #4ade80; border-color: #166534; }
+
+    /* Footer */
+    footer.site { border-top: 1px solid var(--line); background: var(--card); }
+    footer.site .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 1rem; font-size: .85rem; color: var(--muted); }
+    .legend { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+    footer.site a { color: var(--indigo); text-decoration: none; }
+    footer.site a:hover { text-decoration: underline; }
+
+    /* Hidden / newly-added provider cards */
+    article.card.is-hidden-provider { border-style: dashed; border-color: var(--line-2); }
+    .badge.new-provider {
+      background: #ede9fe; color: #5b21b6; font-size: .65rem; font-weight: 700;
+      padding: .12rem .45rem; border-radius: 999px; letter-spacing: .03em;
+    }
+
+    /* Hidden-provider count banner shown when the grid has any hidden providers */
+    .hidden-banner {
+      grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between;
+      gap: .75rem; padding: .65rem 1rem; border-radius: 12px;
+      background: #ede9fe; border: 1px dashed #a78bfa; font-size: .85rem; color: #5b21b6;
+      flex-wrap: wrap;
+    }
+    .hidden-banner strong { font-weight: 600; }
+    .hidden-banner span { opacity: .8; font-size: .8rem; }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --card: #1e293b; --line: #334155; --line-2: #475569;
+        --text: #f1f5f9; --muted: #94a3b8; --muted-2: #64748b;
+        --tag-bg: #0f172a; --tag-fg: #94a3b8;
+        --indigo-50: #1e1b4b;
+        --green-bg: #052e16; --green-fg: #4ade80;
+        --amber-bg: #451a03; --amber-fg: #fbbf24;
+        --shadow: 0 8px 24px rgba(0,0,0,.45);
+        --filter-bg: #1e293b; --filter-fg: #94a3b8; --filter-hover: #334155;
+      }
+      .reply-box.error { border-color: #7f1d1d; background: #1c0a0a; color: #fca5a5; }
+      .badge.new-provider { background: #1e1b4b; color: #a78bfa; }
+      .hidden-banner { background: #1e1b4b; border-color: #7c3aed; color: #a78bfa; }
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen">
+<body>
 
-  <!-- ── Header ── -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-20">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="text-2xl select-none">⚡</span>
-        <span class="font-bold text-lg tracking-tight">Free AI APIs</span>
-      </div>
-      <span class="text-xs text-slate-400">Updated May 2026</span>
+  <header class="site">
+    <div class="wrap">
+      <div class="brand"><span class="bolt" aria-hidden="true">⚡</span><span>Free AI APIs</span></div>
+      <span class="updated">Updated June 2026</span>
     </div>
   </header>
 
-  <!-- ── Hero ── -->
-  <section class="max-w-5xl mx-auto px-4 pt-12 pb-6 text-center">
-    <h1 class="text-4xl font-bold mb-3 tracking-tight">Free AI API Directory</h1>
-    <p class="text-slate-500 text-lg max-w-xl mx-auto leading-relaxed">
-      Reputable providers with a genuine free tier or an always-free offering.<br>No bait-and-switch. No hidden cards required.
-    </p>
+  <section class="hero">
+    <div class="wrap">
+      <h1>Free AI API Directory</h1>
+      <p>Reputable providers with a genuine free tier or always-free offering. Direct sign-up links, copy-paste CLI commands, guided setup, and a built-in tester — try your key live, right in the browser.</p>
 
-    <!-- Filters -->
-    <div class="flex flex-wrap gap-2 justify-center mt-8" id="filters">
-      <button onclick="filter(this,'all')"        class="filter-btn active px-4 py-1.5 rounded-full text-sm font-medium bg-indigo-600 text-white">All</button>
-      <button onclick="filter(this,'LLM')"        class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-slate-200 text-slate-700 hover:bg-slate-300">LLM / Chat</button>
-      <button onclick="filter(this,'Image')"      class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-slate-200 text-slate-700 hover:bg-slate-300">Image</button>
-      <button onclick="filter(this,'Audio')"      class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-slate-200 text-slate-700 hover:bg-slate-300">Audio</button>
-      <button onclick="filter(this,'Search')"     class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-slate-200 text-slate-700 hover:bg-slate-300">Search</button>
-      <button onclick="filter(this,'Embedding')"  class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-slate-200 text-slate-700 hover:bg-slate-300">Embedding</button>
-      <button onclick="filter(this,'Code')"       class="filter-btn px-4 py-1.5 rounded-full text-sm font-medium bg-slate-200 text-slate-700 hover:bg-slate-300">Code</button>
+      <div class="controls">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="search" type="search" placeholder="Search providers, models, capabilities…" aria-label="Search providers" autocomplete="off" />
+        </div>
+        <div class="filters" id="filters" role="tablist" aria-label="Filter by category"></div>
+      </div>
     </div>
   </section>
 
-  <!-- ── Cards ── -->
-  <main class="max-w-5xl mx-auto px-4 pb-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="grid">
+  <span id="result-count" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"></span>
+  <main class="grid" id="grid" aria-label="Free AI API providers"></main>
 
-    <!-- Google Gemini -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Embedding">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🟡 Google Gemini</span>
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
+  <!-- Tester / guided-access modal -->
+  <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="modal-title"></h2>
+        <button class="x" id="modal-close" aria-label="Close">&times;</button>
       </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        Gemini 2.0 Flash — up to 1 million tokens/day free via Google AI Studio. No credit card required.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Embedding</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">1M tokens/day</span>
-      </div>
-      <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
+      <div class="modal-body" id="modal-body"></div>
     </div>
+  </div>
 
-    <!-- Groq -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Code">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">⚡ Groq</span>
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
+  <footer class="site">
+    <div class="wrap">
+      <div class="legend">
+        <span class="badge always">Always Free</span>
+        <span>Free forever within the listed quota — no card required</span>
+        <span class="badge trial" style="margin-left:.4rem">Free Tier / Trial</span>
+        <span>Trial credits, a capped free plan, or pay-as-you-go</span>
       </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        Ultra-fast inference. Free tier includes Llama 3.3, Mixtral, DeepSeek R1, Gemma 2. Rate-limited but no cost.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Code</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Fast inference</span>
-      </div>
-      <a href="https://console.groq.com/keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- OpenRouter -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Image">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🔀 OpenRouter</span>
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        Unified API with 30+ free models: DeepSeek, Mistral, Llama, Gemma. OpenAI-compatible endpoint — one key, every model.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">30+ free models</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">OpenAI-compat</span>
-      </div>
-      <a href="https://openrouter.ai/keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- Cloudflare Workers AI -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Image Embedding">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">☁️ Cloudflare Workers AI</span>
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        10,000 free neurons/day on the free plan. Llama, Mistral, Stable Diffusion, embeddings — runs on Cloudflare's global edge.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Image</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Embedding</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Edge</span>
-      </div>
-      <a href="https://dash.cloudflare.com/" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- Cohere -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Embedding Search">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🧲 Cohere</span>
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        Trial key works indefinitely at low rate limits. Covers Command (chat), Embed, Rerank, and Search — no expiry.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Embedding</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Search</span>
-      </div>
-      <a href="https://dashboard.cohere.com/api-keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- Hugging Face -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Image Audio Embedding">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🤗 Hugging Face</span>
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        Serverless Inference API for thousands of open models — LLM, image gen, audio, embeddings. Free with any HF account.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Image</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Audio</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">1000s of models</span>
-      </div>
-      <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get Token →
-      </a>
-    </div>
-
-    <!-- Tavily -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="Search">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🌐 Tavily</span>
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        1,000 free searches/month. AI-optimised search that returns clean, structured results — ideal for RAG pipelines and agents.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">Search</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">RAG</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Structured results</span>
-      </div>
-      <a href="https://app.tavily.com/home" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- ElevenLabs -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="Audio">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🔊 ElevenLabs</span>
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        10,000 characters/month free, forever. Industry-leading text-to-speech with voice cloning. No card required.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">Audio</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">TTS</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Voice clone</span>
-      </div>
-      <a href="https://elevenlabs.io/app/speech-synthesis" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- Mistral -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Embedding Code">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🌪 Mistral AI</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">Free Tier</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        Mistral 7B, Mixtral, and Codestral free on the "Experimental" plan. Generous rate limits for personal and side-project use.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Embedding</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Code</span>
-      </div>
-      <a href="https://console.mistral.ai/api-keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- xAI Grok -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Image">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">𝕏 xAI Grok</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">$25 free/month</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        $25 free API credit every month automatically. Covers Grok-2 and Grok-2-Vision. OpenAI-compatible endpoint.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Image</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">$25/mo recurring</span>
-      </div>
-      <a href="https://console.x.ai/" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- OpenAI -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Image Audio Embedding Code">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🟢 OpenAI</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">Trial credits</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        Free credits on new accounts. GPT-4o, DALL·E 3, Whisper, TTS, Embeddings all accessible. Pay-as-you-go after credits run out.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Image</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Audio</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Embedding</span>
-      </div>
-      <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- Anthropic -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🔶 Anthropic Claude</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">Trial credits</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        Free credits on new API accounts. Claude 3.5 Haiku is the cheapest and remarkably capable. Also accessible free via Claude.ai.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Haiku · Sonnet · Opus</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Safety-focused</span>
-      </div>
-      <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- DeepSeek -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Code">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🐋 DeepSeek</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">Free credits</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        ¥10 free credit (~$1.40) on signup. DeepSeek-V3 and R1 are among the most cost-effective models available anywhere.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Code</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Reasoning</span>
-      </div>
-      <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- Together AI -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Image">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🤝 Together AI</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">$1 free credit</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        $1 free credit on signup. Runs Llama 3, FLUX, Qwen, DeepSeek and dozens more. Very cheap per-token after.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Image</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">OpenAI-compat</span>
-      </div>
-      <a href="https://api.together.xyz/settings/api-keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- Perplexity -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="LLM Search">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🔍 Perplexity</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">$5 free credit</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        $5 free credit on signup. Sonar models with real-time web search grounding — perfect for up-to-date answers.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">LLM</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Search</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Web-grounded</span>
-      </div>
-      <a href="https://www.perplexity.ai/settings/api" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- AssemblyAI -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="Audio">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🎤 AssemblyAI</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">100 hrs free</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        100 hours of free transcription credit. Speech-to-text, speaker diarisation, summarisation, and LeMUR (LLM on audio).
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">Audio</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Transcription</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Speaker ID</span>
-      </div>
-      <a href="https://www.assemblyai.com/dashboard/signup" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-    <!-- Stability AI -->
-    <div class="card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col gap-3" data-tags="Image">
-      <div class="flex items-center justify-between">
-        <span class="font-semibold">🎨 Stability AI</span>
-        <span class="badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">25 free credits</span>
-      </div>
-      <p class="text-slate-500 text-sm leading-relaxed flex-1">
-        25 free credits on signup. Stable Diffusion 3, SDXL, and image editing via a simple REST API.
-      </p>
-      <div class="flex flex-wrap gap-1">
-        <span class="tag px-2 py-0.5 rounded text-xs">Image</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Stable Diffusion</span>
-        <span class="tag px-2 py-0.5 rounded text-xs">Image editing</span>
-      </div>
-      <a href="https://platform.stability.ai/account/keys" target="_blank" rel="noopener"
-         class="block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 rounded-lg transition">
-        Get API Key →
-      </a>
-    </div>
-
-  </main>
-
-  <!-- ── Footer / Legend ── -->
-  <footer class="border-t border-slate-200 bg-white">
-    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-wrap items-center justify-between gap-4 text-sm text-slate-500">
-      <div class="flex flex-wrap items-center gap-3">
-        <span class="badge-always px-2 py-0.5 rounded-full text-xs font-semibold">Always Free</span>
-        <span>Free forever, no card required</span>
-        <span class="ml-2 badge-offer px-2 py-0.5 rounded-full text-xs font-semibold">Free Tier / Offer</span>
-        <span>Trial credits or capped free plan</span>
-      </div>
-      <a href="https://github.com/rabah2026/free-ai-apis" class="text-indigo-500 hover:underline">
-        Open source — contribute on GitHub ↗
-      </a>
+      <a href="https://github.com/rabah2026/free-ai-apis" target="_blank" rel="noopener noreferrer">Open source — contribute on GitHub ↗</a>
     </div>
   </footer>
 
-  <script>
-    function filter(btn, tag) {
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        b.classList.remove('active', 'bg-indigo-600', 'text-white');
-        b.classList.add('bg-slate-200', 'text-slate-700');
-      });
-      btn.classList.add('active', 'bg-indigo-600', 'text-white');
-      btn.classList.remove('bg-slate-200', 'text-slate-700');
-
-      document.querySelectorAll('#grid > div').forEach(card => {
-        card.style.display =
-          tag === 'all' || card.dataset.tags.includes(tag) ? '' : 'none';
-      });
-    }
-  </script>
+  <script src="/app.js" defer></script>
 </body>
 </html>
