@@ -339,7 +339,7 @@ function providerCard(p) {
     el('span', { class: 'badge ' + p.badge, text: p.badgeLabel })
   );
 
-  return el('article', { class: cardClass, 'data-id': p.id, 'data-hidden': p.hidden ? 'true' : 'false' },
+  return el('article', { class: cardClass, 'data-id': p.id, 'data-badge': p.badge, 'data-hidden': p.hidden ? 'true' : 'false' },
     el('div', { class: 'card-top' },
       el('span', { class: 'card-name' }, el('span', { 'aria-hidden': 'true' }, p.emoji + ' '), p.name),
       topRight
@@ -702,6 +702,26 @@ function trapFocus(e) {
   else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
 }
 
+/* ---------- theme toggle ---------- */
+function initTheme() {
+  const btn = $('#theme-toggle');
+  if (!btn) return;
+  function sync() {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    btn.textContent = dark ? '☀️' : '🌙';
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+    document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+  }
+  btn.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('faa_theme', next);
+    sync();
+  });
+  sync();
+}
+
 /* ---------- hero stats ---------- */
 function renderHeroStats() {
   const host = $('#hero-stats');
@@ -727,6 +747,7 @@ function init() {
   const updEl = document.querySelector('.updated-text');
   if (updEl) updEl.textContent = LAST_UPDATED;
 
+  initTheme();
   renderHeroStats();
   renderFilters();
   renderGrid();
