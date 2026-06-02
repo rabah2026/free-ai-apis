@@ -702,11 +702,32 @@ function trapFocus(e) {
   else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
 }
 
+/* ---------- hero stats ---------- */
+function renderHeroStats() {
+  const host = $('#hero-stats');
+  if (!host) return;
+  const always = PROVIDERS.filter(p => p.badge === 'always').length;
+  const added  = PROVIDERS.filter(p => p.hidden).length;
+  const stats  = [
+    { n: PROVIDERS.length,    label: 'providers' },
+    { n: always,              label: 'always free' },
+    { n: added,               label: 'newly added' },
+    { n: CATEGORIES.length - 1, label: 'categories' },
+  ];
+  stats.forEach((s, i) => {
+    if (i > 0) host.append(el('span', { class: 'stat-dot', 'aria-hidden': 'true', text: '·' }));
+    const span = el('span', { class: 'stat' });
+    span.append(el('strong', { text: String(s.n) }), document.createTextNode(' ' + s.label));
+    host.append(span);
+  });
+}
+
 /* ---------- wire up ---------- */
 function init() {
-  const updEl = document.querySelector('.updated');
-  if (updEl) updEl.textContent = 'Updated ' + LAST_UPDATED;
+  const updEl = document.querySelector('.updated-text');
+  if (updEl) updEl.textContent = LAST_UPDATED;
 
+  renderHeroStats();
   renderFilters();
   renderGrid();
 
