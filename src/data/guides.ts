@@ -6,6 +6,8 @@ export type Guide = {
   readingTime: string;
   content: string;
   lastVerified: string;
+  titleAr?: string;
+  summaryAr?: string;
 };
 
 export const guides: Guide[] = [
@@ -37,7 +39,9 @@ AI APIs let you add AI features to your apps quickly. They are how most real-wor
 4. Handle the response
 
 That is it. Most AI APIs work exactly like any other web API you may have used.`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "ما هي واجهة برمجة الذكاء الاصطناعي؟",
+    summaryAr: "شرح بسيط لما هي واجهات برمجة الذكاء الاصطناعي ولماذا يستخدمها المبتدئون."
   },
   {
     id: "what-is-an-api-key",
@@ -69,7 +73,9 @@ Put your key in .env.local and access it in server-side code:
 Then use it: \`process.env.OPENAI_API_KEY\`
 
 Never pass it to the browser. Use API routes to proxy your AI calls.`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "ما هو مفتاح API؟",
+    summaryAr: "ما هو مفتاح API، ولماذا يهم، وكيف تحميه."
   },
   {
     id: "what-is-a-free-tier",
@@ -96,7 +102,9 @@ Some AI tools can run locally on your own machine for free (like Ollama). No API
 - Always check the official pricing page before building a production app that depends on the free tier.
 - "Free to start" is not the same as "free forever."
 - Some providers require a credit card even for free tiers — read the sign-up page carefully.`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "ما هي الطبقة المجانية؟",
+    summaryAr: "الفرق بين الطبقات المجانية والتجارب المجانية والأرصدة المجانية — وما يجب الانتباه إليه."
   },
   {
     id: "what-are-rate-limits",
@@ -130,7 +138,9 @@ Free tiers almost always have lower rate limits than paid tiers. This is fine fo
 - Cache responses when possible — do not make the same API call twice
 - Batch requests if the API supports it
 - Implement exponential backoff when retrying after a 429 error`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "ما هي حدود المعدل؟",
+    summaryAr: "لماذا توجد حدود المعدل وكيف تؤثر على تطبيقك."
   },
   {
     id: "what-are-tokens",
@@ -162,7 +172,9 @@ Every model has a context window — the maximum number of tokens it can process
 - Do not include more conversation history than necessary
 - Check the model's context window before planning a feature that needs to process long documents
 - Most free tiers have token-per-minute limits — be aware of them`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "ما هي الرموز (Tokens)؟",
+    summaryAr: "كيف تقيس واجهات الذكاء الاصطناعي النص وتسعّره باستخدام الرموز."
   },
   {
     id: "how-to-protect-your-api-key",
@@ -203,7 +215,9 @@ Check your API dashboard regularly for unusual usage that might mean your key ha
 2. Revoke (delete) the exposed key
 3. Create a new key
 4. Update your environment variables`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "كيف تحمي مفتاح API الخاص بك",
+    summaryAr: "القواعد الأساسية للحفاظ على أمان مفتاح API الخاص بك."
   },
   {
     id: "what-is-openai-compatible",
@@ -242,7 +256,9 @@ If you learn the OpenAI SDK once, you can use the same code with Groq, OpenRoute
 
 **Important caveat:**
 "Compatible" does not mean identical. Some features (like specific parameters or streaming options) may behave differently or not be supported. Always check the provider's specific docs.`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "ما معنى واجهة متوافقة مع OpenAI؟",
+    summaryAr: "ما يعنيه التوافق مع OpenAI ولماذا يهم المبتدئين."
   },
   {
     id: "how-to-choose-your-first-ai-api",
@@ -286,7 +302,9 @@ You can always switch providers later. Learning the pattern matters more than pi
 
 **Our recommendation for most beginners:**
 Start with Google Gemini API (easiest free tier, no credit card) or Groq (fastest, OpenAI-compatible). Both have great docs and real free access.`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "كيف تختار أول واجهة ذكاء اصطناعي لك",
+    summaryAr: "دليل عملي لاختيار واجهة الذكاء الاصطناعي المناسبة لمشروعك الأول."
   },
   {
     id: "best-first-ai-api-project",
@@ -333,7 +351,9 @@ Once you have the chatbot working, extend it:
 - Vercel (free hosting)
 
 Total cost: $0 for prototyping.`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "أفضل مشروع أول لمبتدئي واجهات الذكاء الاصطناعي",
+    summaryAr: "فكرة مشروع عملي للمبتدئين يعلم جميع المفاهيم الأساسية."
   },
   {
     id: "free-tier-vs-free-trial-vs-free-credits",
@@ -372,6 +392,8 @@ Best for: Getting started quickly without a credit card, but you will need to pa
 
 **The honest truth:**
 Free tiers and free credit amounts change. What is generous today may be reduced tomorrow. Always check the official source, and never assume a free tier is permanent unless the official docs say so clearly.`,
-    lastVerified: "2025-06-01"
+    lastVerified: "2025-06-01",
+    titleAr: "الطبقة المجانية مقابل التجربة المجانية مقابل الأرصدة المجانية",
+    summaryAr: "افهم الفرق بين الأنواع الثلاثة للوصول المجاني حتى لا تُفاجأ بفاتورة."
   }
 ];
