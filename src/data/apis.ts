@@ -14,6 +14,7 @@ export type ApiProvider = {
   slug: string;
   name: string;
   shortDescription: string;
+  shortDescriptionAr?: string;
   beginnerSummary: string;
   officialWebsite: string;
   docsUrl: string;
@@ -41,6 +42,7 @@ export const apis: ApiProvider[] = [
     slug: "google-gemini",
     name: "Google Gemini API",
     shortDescription: "Google's multimodal AI API with a generous free tier via Google AI Studio.",
+    shortDescriptionAr: "واجهة برمجية متعددة الوسائط من Google مع طبقة مجانية سخية عبر Google AI Studio.",
     beginnerSummary: "Google Gemini is one of the easiest AI APIs to start with. You can get an API key for free from Google AI Studio and start building chatbots, summarizers, and multimodal apps quickly. No credit card needed to start.",
     officialWebsite: "https://ai.google.dev/",
     docsUrl: "https://ai.google.dev/gemini-api/docs",
@@ -87,6 +89,7 @@ export const apis: ApiProvider[] = [
     slug: "github-models",
     name: "GitHub Models",
     shortDescription: "Free rate-limited access to frontier AI models for GitHub users.",
+    shortDescriptionAr: "وصول مجاني محدود المعدل إلى أحدث نماذج الذكاء الاصطناعي لمستخدمي GitHub.",
     beginnerSummary: "GitHub Models gives every GitHub account free access to many frontier AI models — including GPT-4o, Llama, Mistral, and more — for prototyping and experimentation. It uses an OpenAI-compatible API format, which makes it easy for beginners already familiar with OpenAI.",
     officialWebsite: "https://github.com/marketplace?type=models",
     docsUrl: "https://docs.github.com/en/github-models",
@@ -133,6 +136,7 @@ export const apis: ApiProvider[] = [
     slug: "cloudflare-workers-ai",
     name: "Cloudflare Workers AI",
     shortDescription: "Run AI models at the edge for free within Cloudflare Workers, with usage-based pricing.",
+    shortDescriptionAr: "شغّل نماذج الذكاء الاصطناعي على حافة الشبكة مجاناً ضمن Cloudflare Workers مع تسعير حسب الاستخدام.",
     beginnerSummary: "Cloudflare Workers AI lets you run AI models inside Cloudflare Workers — right at the network edge — without managing servers. The free tier of Cloudflare Workers includes a daily free allocation of AI inference units. It is beginner-friendly if you are already building on Cloudflare.",
     officialWebsite: "https://developers.cloudflare.com/workers-ai/",
     docsUrl: "https://developers.cloudflare.com/workers-ai/",
@@ -180,6 +184,7 @@ export const apis: ApiProvider[] = [
     slug: "groq",
     name: "Groq API",
     shortDescription: "Extremely fast LLM inference API with a free tier for prototyping.",
+    shortDescriptionAr: "واجهة استنتاج سريعة جداً للنماذج اللغوية مع طبقة مجانية للتجربة والبناء.",
     beginnerSummary: "Groq is known for its speed — it can run large language models much faster than most providers. Groq offers an API with rate-limited free access for developers. It supports popular open-source models like Llama and Mixtral. The API format is OpenAI-compatible, making it a drop-in option for many projects.",
     officialWebsite: "https://console.groq.com/",
     docsUrl: "https://console.groq.com/docs/overview",
@@ -226,6 +231,7 @@ export const apis: ApiProvider[] = [
     slug: "hugging-face",
     name: "Hugging Face Inference Providers",
     shortDescription: "Access hundreds of open-source AI models through Hugging Face's inference infrastructure.",
+    shortDescriptionAr: "الوصول إلى مئات النماذج مفتوحة المصدر عبر بنية Hugging Face التحتية للاستنتاج.",
     beginnerSummary: "Hugging Face is the largest open-source AI model hub. Their Inference Providers feature gives you API access to hundreds of models — including text, image, speech, and embedding models — with a free tier and pay-as-you-go pricing after that. It is a great place to explore what open-source AI can do.",
     officialWebsite: "https://huggingface.co/",
     docsUrl: "https://huggingface.co/docs/inference-providers/en/index",
@@ -273,6 +279,7 @@ export const apis: ApiProvider[] = [
     slug: "openrouter",
     name: "OpenRouter",
     shortDescription: "One API to access hundreds of AI models — with free models available.",
+    shortDescriptionAr: "واجهة برمجية واحدة للوصول إلى مئات النماذج — مع نماذج مجانية متاحة.",
     beginnerSummary: "OpenRouter is a routing layer that lets you access many AI models — including free ones — through a single OpenAI-compatible API. If you want to try multiple models without creating accounts everywhere, OpenRouter is a great starting point. Some models are listed as free with rate limits.",
     officialWebsite: "https://openrouter.ai/",
     docsUrl: "https://openrouter.ai/docs",
@@ -320,6 +327,7 @@ export const apis: ApiProvider[] = [
     slug: "deepgram",
     name: "Deepgram",
     shortDescription: "Speech-to-text and text-to-speech API with free starting credits.",
+    shortDescriptionAr: "واجهة تحويل الصوت إلى نص والنص إلى صوت مع أرصدة مجانية للبدء.",
     beginnerSummary: "Deepgram specializes in speech AI — converting audio to text and text to audio. They offer free starting credits to new accounts so you can build voice apps without paying upfront. Their docs are beginner-friendly and they have real-time streaming transcription support.",
     officialWebsite: "https://deepgram.com/",
     docsUrl: "https://developers.deepgram.com/home",
@@ -366,6 +374,7 @@ export const apis: ApiProvider[] = [
     slug: "replicate",
     name: "Replicate",
     shortDescription: "Run open-source AI models in the cloud — pay per second of compute.",
+    shortDescriptionAr: "شغّل نماذج الذكاء الاصطناعي مفتوحة المصدر في السحابة — الدفع بالثانية.",
     beginnerSummary: "Replicate lets you run thousands of open-source AI models through a simple API — image generation, video, speech, and more. It uses a pay-per-second billing model, so costs can add up. You may be able to try it with a small amount of starting credit, but it is primarily a paid service. Always check official billing docs before building.",
     officialWebsite: "https://replicate.com/",
     docsUrl: "https://replicate.com/docs",
@@ -413,6 +422,7 @@ export const apis: ApiProvider[] = [
     slug: "together-ai",
     name: "Together AI",
     shortDescription: "Fast inference API for open-source LLMs with OpenAI-compatible endpoints.",
+    shortDescriptionAr: "واجهة استنتاج سريعة للنماذج اللغوية مفتوحة المصدر متوافقة مع OpenAI.",
     beginnerSummary: "Together AI provides fast inference for popular open-source models like Llama, Mistral, and Qwen through an OpenAI-compatible API. It is easy to use if you already know the OpenAI SDK. Check the official pricing page for current free trial or credit availability — the exact free tier is not permanently fixed.",
     officialWebsite: "https://www.together.ai/",
     docsUrl: "https://docs.together.ai/",
@@ -459,6 +469,7 @@ export const apis: ApiProvider[] = [
     slug: "fireworks-ai",
     name: "Fireworks AI",
     shortDescription: "High-speed inference API for open-source models with OpenAI-compatible endpoints.",
+    shortDescriptionAr: "واجهة استنتاج فائقة السرعة للنماذج مفتوحة المصدر متوافقة مع OpenAI.",
     beginnerSummary: "Fireworks AI focuses on extremely fast inference for open-source models. It is OpenAI-compatible, making it easy to swap in as a provider. Check the official pricing page for current free credits or trial availability — this is not clearly documented as a permanent free tier.",
     officialWebsite: "https://fireworks.ai/",
     docsUrl: "https://docs.fireworks.ai/",

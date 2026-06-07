@@ -44,7 +44,7 @@ export default function ArHomePage() {
           <Link href="/ar/apis" className="text-sm text-indigo-400 hover:underline">عرض الكل ←</Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {featuredApis.map((api) => <ApiCard key={api.id} api={api} />)}
+          {featuredApis.map((api) => <ApiCard key={api.id} api={api} locale="ar" />)}
         </div>
       </section>
 

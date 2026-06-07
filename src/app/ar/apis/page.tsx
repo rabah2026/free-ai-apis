@@ -83,7 +83,7 @@ export default function ArApisPage() {
         <EmptyState message="لا توجد واجهات تطابق عوامل التصفية. حاول تعديل بحثك." />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((api) => <ApiCard key={api.id} api={api} />)}
+          {filtered.map((api) => <ApiCard key={api.id} api={api} locale="ar" />)}
         </div>
       )}
     </div>
