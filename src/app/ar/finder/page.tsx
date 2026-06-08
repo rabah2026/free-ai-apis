@@ -25,8 +25,8 @@ export default function ArFinderPage() {
   return (
     <div dir="rtl" className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold text-white mb-2">ابحث عن الواجهة البرمجية المناسبة</h1>
-        <p className="text-[#7d94b5]">اختر ما تريد بناءه وسنوصي بواجهات مناسبة للمبتدئين.</p>
+        <h1 className="text-3xl font-bold text-white mb-2">ابحث عن API المناسب</h1>
+        <p className="text-[#7d94b5]">اختر ما تريد بناءه وسنوصي بـ APIs مناسبة للمبتدئين.</p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-12">
@@ -51,7 +51,7 @@ export default function ArFinderPage() {
             موصى به لـ: <span className="text-indigo-400">{USE_CASES.find((u) => u.value === selected)?.label}</span>
           </h2>
           {recommendations.length === 0 ? (
-            <EmptyState message={`لا توجد واجهات لـ "${selected}". جرّب حالة استخدام أخرى.`} />
+            <EmptyState message={`لا توجد APIs لـ "${selected}". جرّب حالة استخدام أخرى.`} />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {recommendations.map((api) => <ApiCard key={api.id} api={api} locale="ar" />)}

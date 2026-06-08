@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const api = apis.find((a) => a.slug === params.slug);
   if (!api) return {};
   return {
-    title: `${api.name} — دليل المبتدئ | مرشد واجهات الذكاء الاصطناعي`,
+    title: `${api.name} — دليل المبتدئ | مرشد AI APIs`,
     description: api.beginnerSummary,
   };
 }
@@ -193,7 +193,7 @@ export default function ArApiDetailPage({ params }: Props) {
 
       {similar.length > 0 && (
         <section className="mt-16 border-t border-[#1e2d45] pt-10">
-          <h2 className="text-xl font-bold text-white mb-6">واجهات مشابهة</h2>
+          <h2 className="text-xl font-bold text-white mb-6">APIs مشابهة</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {similar.map((a) => <ApiCard key={a.id} api={a} locale="ar" />)}
           </div>

@@ -17,7 +17,7 @@ export default function Header() {
             مرشد AI
           </Link>
           <nav className="flex items-center gap-0.5 overflow-x-auto">
-            <Link href="/ar/apis" className="text-sm text-[#7d94b5] hover:text-white px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap">واجهات</Link>
+            <Link href="/ar/apis" className="text-sm text-[#7d94b5] hover:text-white px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap">APIs</Link>
             <Link href="/ar/finder" className="text-sm text-[#7d94b5] hover:text-white px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap">ابحث</Link>
             <Link href="/ar/guides" className="text-sm text-[#7d94b5] hover:text-white px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap">أدلة</Link>
             <Link href="/ar/about" className="text-sm text-[#7d94b5] hover:text-white px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap hidden sm:block">عن الموقع</Link>

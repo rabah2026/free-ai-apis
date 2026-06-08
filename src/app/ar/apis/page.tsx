@@ -35,15 +35,15 @@ export default function ArApisPage() {
   return (
     <div dir="rtl" className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold text-white mb-2">دليل واجهات الذكاء الاصطناعي</h1>
-        <p className="text-[#7d94b5]">واجهات برمجية رسمية مع طبقات مجانية وملخصات للمبتدئين ومعلومات صادقة عن الأسعار.</p>
+        <h1 className="text-3xl font-bold text-white mb-2">دليل AI APIs</h1>
+        <p className="text-[#7d94b5]">AI APIs رسمية مع طبقات مجانية وملخصات للمبتدئين ومعلومات صادقة عن الأسعار.</p>
       </div>
       <div className="space-y-4 mb-8">
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="ابحث عن واجهات، ميزات، مزوّدين…"
+          placeholder="ابحث عن APIs، ميزات، مزوّدين…"
           className="w-full bg-[#111827] border border-[#1e2d45] text-white placeholder-[#4a6080] rounded-xl px-4 py-3 outline-none focus:border-indigo-700 transition-colors text-right"
           dir="rtl"
         />
@@ -80,7 +80,7 @@ export default function ArApisPage() {
       </div>
       <div className="text-sm text-[#4a6080] mb-4">{filtered.length} مزوّد</div>
       {filtered.length === 0 ? (
-        <EmptyState message="لا توجد واجهات تطابق عوامل التصفية. حاول تعديل بحثك." />
+        <EmptyState message="لا توجد APIs تطابق عوامل التصفية. حاول تعديل بحثك." />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((api) => <ApiCard key={api.id} api={api} locale="ar" />)}

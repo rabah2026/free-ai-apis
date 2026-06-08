@@ -22,7 +22,8 @@ export default function ArGuideDetailPage({ params }: Props) {
   const guide = guides.find((g) => g.slug === params.slug);
   if (!guide) notFound();
 
-  const paragraphs = guide.content.split("\n\n");
+  const content = guide.contentAr ?? guide.content;
+  const paragraphs = content.split("\n\n");
 
   return (
     <div dir="rtl" className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
@@ -34,10 +35,7 @@ export default function ArGuideDetailPage({ params }: Props) {
       </div>
       <h1 className="text-3xl font-bold text-white mb-4">{guide.titleAr ?? guide.title}</h1>
       <p className="text-lg text-[#7d94b5] mb-6">{guide.summaryAr ?? guide.summary}</p>
-      <div className="mb-6 bg-[#111827] border border-[#1e2d45] rounded-xl px-4 py-3 text-sm text-[#7d94b5]">
-        محتوى هذا الدليل باللغة الإنجليزية.
-      </div>
-      <div dir="ltr" className="space-y-5 text-left">
+      <div className="space-y-5">
         {paragraphs.map((para, i) => {
           if (para.startsWith("**") && para.endsWith("**")) {
             return (
@@ -108,3 +106,4 @@ export default function ArGuideDetailPage({ params }: Props) {
     </div>
   );
 }
+
