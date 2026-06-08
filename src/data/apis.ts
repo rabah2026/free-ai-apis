@@ -510,5 +510,287 @@ export const apis: ApiProvider[] = [
       "https://docs.fireworks.ai/getting-started/quickstart"
     ],
     lastVerified: "2025-06-01"
+  },
+  {
+    id: "deepseek",
+    slug: "deepseek",
+    name: "DeepSeek API",
+    shortDescription: "Powerful Chinese AI models (DeepSeek-V3, R1) via an OpenAI-compatible API with free starting credits.",
+    shortDescriptionAr: "نماذج ذكاء اصطناعي صينية قوية (DeepSeek-V3, R1) عبر API متوافق مع OpenAI مع أرصدة مجانية للبدء.",
+    beginnerSummary: "DeepSeek is a Chinese AI lab offering powerful language models — including DeepSeek-V3 for general chat and DeepSeek-R1 for step-by-step reasoning. Their API is OpenAI-compatible and new accounts receive free starting credits. DeepSeek-R1 is especially notable for math, coding, and logic tasks.",
+    officialWebsite: "https://platform.deepseek.com/",
+    docsUrl: "https://platform.deepseek.com/api-docs",
+    pricingUrl: "https://platform.deepseek.com/api-docs/pricing",
+    apiKeyUrl: "https://platform.deepseek.com/api-keys",
+    freeTierType: "free-credits",
+    freeTierNotes: "New accounts receive free starting credits. Check the official pricing page at https://platform.deepseek.com/api-docs/pricing for the current credit amount, as it may change.",
+    requiresCreditCard: "no",
+    beginnerDifficulty: "easy",
+    bestFor: ["Chatbots", "Reasoning tasks", "Code generation", "Cost-effective LLM inference"],
+    supportedFeatures: ["Text generation", "Chat", "Code generation", "Function calling", "JSON mode", "Streaming", "Reasoning (R1)"],
+    openAiCompatible: "yes",
+    rateLimitNotes: "Rate limits apply. Check the official docs for current limits per model.",
+    exampleUseCase: "Build a reasoning-capable assistant using DeepSeek-R1 that solves math and logic problems step by step.",
+    starterSteps: [
+      "Sign up at https://platform.deepseek.com/",
+      "Create an API key at https://platform.deepseek.com/api-keys",
+      "Install the OpenAI SDK: npm install openai",
+      "Set base URL to https://api.deepseek.com and use your DeepSeek API key",
+      "Read the quickstart at https://platform.deepseek.com/api-docs/quickstart"
+    ],
+    pros: [
+      "OpenAI-compatible — works with existing OpenAI SDK code",
+      "Free starting credits for new accounts",
+      "Competitive model quality, especially DeepSeek-R1 for reasoning",
+      "Very affordable pricing after free credits",
+      "Both general-purpose and reasoning-focused models available"
+    ],
+    limitations: [
+      "Free credits will run out — billing required for sustained use",
+      "Service may have availability issues during peak demand",
+      "Based in China — review data privacy implications for your use case",
+      "Free credit amount may change — check official pricing"
+    ],
+    sourceUrls: [
+      "https://platform.deepseek.com/api-docs",
+      "https://platform.deepseek.com/api-docs/pricing",
+      "https://platform.deepseek.com/api-docs/quickstart"
+    ],
+    lastVerified: "2025-06-01"
+  },
+  {
+    id: "qwen",
+    slug: "qwen",
+    name: "Qwen API (Alibaba)",
+    shortDescription: "Alibaba's Qwen language models via the DashScope API, with free quota for new users.",
+    shortDescriptionAr: "نماذج Qwen اللغوية من Alibaba عبر DashScope API مع حصة مجانية للمستخدمين الجدد.",
+    beginnerSummary: "Qwen is Alibaba's family of AI language models, ranging from lightweight to powerful frontier-class models. Accessed via the DashScope API (Alibaba Cloud Model Studio), new accounts receive a free usage quota. Qwen models are strong at multilingual tasks, long-context documents, and code generation.",
+    officialWebsite: "https://www.alibabacloud.com/en/solutions/generative-ai/qwen",
+    docsUrl: "https://www.alibabacloud.com/help/en/model-studio/getting-started/first-api-call-by-using-openai-compatible-apis",
+    pricingUrl: "https://www.alibabacloud.com/help/en/model-studio/billing-overview",
+    apiKeyUrl: "https://www.alibabacloud.com/help/en/model-studio/getting-started/get-api-key",
+    freeTierType: "free-credits",
+    freeTierNotes: "New Alibaba Cloud accounts receive a free token quota for Qwen models. Check the official pricing page for current free quota details, as they may vary by region and model.",
+    requiresCreditCard: "unknown",
+    beginnerDifficulty: "medium",
+    bestFor: ["Text generation", "Multilingual tasks", "Code generation", "Long-context documents", "Vision"],
+    supportedFeatures: ["Text generation", "Chat", "Code generation", "Vision/image understanding", "Embeddings", "Function calling", "Streaming"],
+    openAiCompatible: "yes",
+    rateLimitNotes: "Free quota is limited. Usage above the free quota is billed per token. Check the official pricing page for rates.",
+    exampleUseCase: "Build a multilingual document summarizer using Qwen's long-context capabilities to process large files in Arabic, Chinese, or English.",
+    starterSteps: [
+      "Sign up for Alibaba Cloud at https://www.alibabacloud.com/",
+      "Get an API key at https://www.alibabacloud.com/help/en/model-studio/getting-started/get-api-key",
+      "Install the OpenAI SDK: npm install openai",
+      "Set base URL to https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "Follow the guide at https://www.alibabacloud.com/help/en/model-studio/getting-started/first-api-call-by-using-openai-compatible-apis"
+    ],
+    pros: [
+      "OpenAI-compatible API — easy to integrate",
+      "Free quota for new accounts",
+      "Excellent multilingual support including Arabic and Chinese",
+      "Wide model range: from fast small models to powerful ones",
+      "Supports vision and long-context tasks"
+    ],
+    limitations: [
+      "Registration may require phone verification and may vary by region",
+      "Free quota may be limited — check official pricing before building",
+      "Based in China — review data privacy implications for your use case",
+      "Some features require paid tier"
+    ],
+    sourceUrls: [
+      "https://www.alibabacloud.com/help/en/model-studio/getting-started/first-api-call-by-using-openai-compatible-apis",
+      "https://www.alibabacloud.com/help/en/model-studio/billing-overview",
+      "https://www.alibabacloud.com/help/en/model-studio/getting-started/get-api-key"
+    ],
+    lastVerified: "2025-06-01"
+  },
+  {
+    id: "zhipu-ai",
+    slug: "zhipu-ai",
+    name: "Zhipu AI (BigModel)",
+    shortDescription: "Chinese AI lab offering GLM language and vision models via API with a free tier.",
+    shortDescriptionAr: "مختبر ذكاء اصطناعي صيني يقدم نماذج GLM للغة والرؤية عبر API مع طبقة مجانية.",
+    beginnerSummary: "Zhipu AI is a Chinese AI research company offering their GLM (General Language Model) series through the BigModel platform. GLM-4 and related models handle text, code, and image tasks. A free tier is available. The API is partially OpenAI-compatible, and documentation is available in both Chinese and English.",
+    officialWebsite: "https://open.bigmodel.cn/",
+    docsUrl: "https://open.bigmodel.cn/dev/howuse/introduction",
+    pricingUrl: "https://open.bigmodel.cn/pricing",
+    apiKeyUrl: "https://open.bigmodel.cn/usercenter/apikeys",
+    freeTierType: "free-tier",
+    freeTierNotes: "Zhipu AI provides a free tier with limited usage for developers. Check the official pricing page at https://open.bigmodel.cn/pricing for current free limits per model.",
+    requiresCreditCard: "no",
+    beginnerDifficulty: "medium",
+    bestFor: ["Chinese language tasks", "Text generation", "Code generation", "Vision understanding"],
+    supportedFeatures: ["Text generation", "Chat", "Code generation", "Vision/image understanding", "Embeddings", "Function calling", "Streaming"],
+    openAiCompatible: "partial",
+    rateLimitNotes: "Free tier has rate limits per model. Check the official pricing page for current limits.",
+    exampleUseCase: "Build a Chinese-English bilingual chatbot or assistant using GLM-4, which has strong Chinese language understanding.",
+    starterSteps: [
+      "Sign up at https://open.bigmodel.cn/",
+      "Get an API key at https://open.bigmodel.cn/usercenter/apikeys",
+      "Browse the API docs at https://open.bigmodel.cn/dev/api",
+      "Use the BigModel SDK or call the REST API directly",
+      "Check the SDK guide at https://open.bigmodel.cn/dev/howuse/bigmodel_sdk"
+    ],
+    pros: [
+      "Free tier available without credit card",
+      "Excellent Chinese language capabilities",
+      "Capable vision and code-generation models",
+      "GLM-4 is competitive with other frontier models",
+      "Partial OpenAI-compatible API structure"
+    ],
+    limitations: [
+      "Free tier has strict rate limits",
+      "OpenAI compatibility is partial — some code adjustments may be needed",
+      "Documentation is primarily in Chinese — English docs are available but less comprehensive",
+      "Based in China — review data privacy implications for your use case"
+    ],
+    sourceUrls: [
+      "https://open.bigmodel.cn/dev/howuse/introduction",
+      "https://open.bigmodel.cn/pricing",
+      "https://open.bigmodel.cn/dev/api"
+    ],
+    lastVerified: "2025-06-01"
+  },
+  {
+    id: "mistral-ai",
+    slug: "mistral-ai",
+    name: "Mistral AI API",
+    shortDescription: "European AI lab with efficient open and commercial models and a free tier via La Plateforme.",
+    shortDescriptionAr: "مختبر ذكاء اصطناعي أوروبي يقدم نماذج فعّالة مفتوحة وتجارية مع طبقة مجانية عبر La Plateforme.",
+    beginnerSummary: "Mistral AI is a French AI lab offering strong language models — from small, efficient models to frontier ones. Their La Plateforme API provides rate-limited free access for experimentation. The API is fully OpenAI-compatible, making it easy to switch from OpenAI. Their open-weight models are also popular for self-hosting.",
+    officialWebsite: "https://mistral.ai/",
+    docsUrl: "https://docs.mistral.ai/",
+    pricingUrl: "https://mistral.ai/technology/pricing",
+    apiKeyUrl: "https://console.mistral.ai/api-keys",
+    freeTierType: "free-tier",
+    freeTierNotes: "Mistral AI offers rate-limited free access to select models via La Plateforme. Check the official pricing page at https://mistral.ai/technology/pricing for current free tier details and rate limits.",
+    requiresCreditCard: "no",
+    beginnerDifficulty: "easy",
+    bestFor: ["Text generation", "Code generation", "Chatbots", "Cost-efficient inference"],
+    supportedFeatures: ["Text generation", "Chat", "Code generation", "Embeddings", "Function calling", "JSON mode", "Streaming"],
+    openAiCompatible: "yes",
+    rateLimitNotes: "Free tier has rate limits. Paid tiers offer higher throughput. Check the pricing page for current free and paid limits.",
+    exampleUseCase: "Build a coding assistant using Mistral's code-specialized model — efficient and cost-effective compared to frontier models.",
+    starterSteps: [
+      "Sign up at https://console.mistral.ai/ (free account available)",
+      "Create an API key at https://console.mistral.ai/api-keys",
+      "Install the OpenAI SDK: npm install openai",
+      "Set base URL to https://api.mistral.ai/v1 and use your Mistral API key",
+      "Follow the quickstart at https://docs.mistral.ai/getting-started/quickstart"
+    ],
+    pros: [
+      "OpenAI-compatible — minimal code changes from existing OpenAI projects",
+      "Free tier available without credit card",
+      "Strong performance-to-cost ratio on paid tiers",
+      "Open-weight models also available for self-hosting",
+      "European provider — relevant for EU data residency considerations"
+    ],
+    limitations: [
+      "Free tier rate limits are strict",
+      "Frontier-tier models require a paid plan",
+      "Smaller model ecosystem than OpenAI",
+      "Free tier availability may change — check official pricing"
+    ],
+    sourceUrls: [
+      "https://docs.mistral.ai/",
+      "https://mistral.ai/technology/pricing",
+      "https://docs.mistral.ai/getting-started/quickstart"
+    ],
+    lastVerified: "2025-06-01"
+  },
+  {
+    id: "cerebras",
+    slug: "cerebras",
+    name: "Cerebras Inference",
+    shortDescription: "Extremely fast LLM inference on purpose-built AI chips, with a free rate-limited tier.",
+    shortDescriptionAr: "استنتاج فائق السرعة للنماذج اللغوية على شرائح ذكاء اصطناعي متخصصة مع طبقة مجانية محدودة المعدل.",
+    beginnerSummary: "Cerebras runs AI inference on custom-built wafer-scale chips, making it significantly faster than GPU-based providers — often 10–20x faster. They offer a free rate-limited tier for Llama models. The API is OpenAI-compatible, so if you already know the OpenAI SDK, switching to Cerebras requires only a base URL change.",
+    officialWebsite: "https://cloud.cerebras.ai/",
+    docsUrl: "https://inference-docs.cerebras.ai/",
+    pricingUrl: "https://cloud.cerebras.ai/pricing",
+    apiKeyUrl: "https://cloud.cerebras.ai/platform",
+    freeTierType: "free-tier",
+    freeTierNotes: "Cerebras offers a free tier with rate-limited access. Check the official pricing page at https://cloud.cerebras.ai/pricing for current free tier limits and rate limits.",
+    requiresCreditCard: "no",
+    beginnerDifficulty: "easy",
+    bestFor: ["Fast inference", "Real-time chatbots", "Low-latency apps", "Code generation"],
+    supportedFeatures: ["Text generation", "Chat", "Code generation", "Streaming", "Tool use"],
+    openAiCompatible: "yes",
+    rateLimitNotes: "Free tier has rate limits. See the official pricing page for current limits.",
+    exampleUseCase: "Build a real-time coding assistant that responds nearly instantly — Cerebras can generate thousands of tokens per second.",
+    starterSteps: [
+      "Sign up at https://cloud.cerebras.ai/",
+      "Get an API key from the platform dashboard",
+      "Install the OpenAI SDK: npm install openai",
+      "Set base URL to https://api.cerebras.ai/v1 and use your Cerebras API key",
+      "Follow the docs at https://inference-docs.cerebras.ai/quickstart"
+    ],
+    pros: [
+      "Extremely fast inference — best-in-class speed for Llama models",
+      "OpenAI-compatible API — works with existing OpenAI SDK code",
+      "Free tier available without credit card",
+      "Ideal for latency-sensitive real-time apps",
+      "Simple setup if you already know OpenAI SDK"
+    ],
+    limitations: [
+      "Limited model selection — primarily Llama-family models",
+      "Free tier has rate limits",
+      "Not suitable for tasks requiring frontier closed models like GPT-4 or Claude",
+      "Newer provider — ecosystem and model range still growing"
+    ],
+    sourceUrls: [
+      "https://inference-docs.cerebras.ai/",
+      "https://cloud.cerebras.ai/pricing",
+      "https://inference-docs.cerebras.ai/quickstart"
+    ],
+    lastVerified: "2025-06-01"
+  },
+  {
+    id: "xai-grok",
+    slug: "xai-grok",
+    name: "xAI Grok API",
+    shortDescription: "xAI's Grok language models via an OpenAI-compatible API with free monthly developer credits.",
+    shortDescriptionAr: "نماذج Grok اللغوية من xAI عبر API متوافق مع OpenAI مع أرصدة شهرية مجانية للمطورين.",
+    beginnerSummary: "xAI is Elon Musk's AI company offering the Grok family of language models. Their API provides access to Grok models for chat, reasoning, and vision tasks. Developer accounts receive free monthly API credits. The API is OpenAI-compatible, making it straightforward to integrate into existing projects.",
+    officialWebsite: "https://x.ai/",
+    docsUrl: "https://docs.x.ai/docs",
+    pricingUrl: "https://x.ai/api",
+    apiKeyUrl: "https://console.x.ai/",
+    freeTierType: "free-credits",
+    freeTierNotes: "xAI provides free monthly API credits for developers. Check the official pricing page at https://x.ai/api for the current credit amount and model pricing, as they may change.",
+    requiresCreditCard: "no",
+    beginnerDifficulty: "easy",
+    bestFor: ["Chatbots", "Text generation", "Reasoning", "Vision understanding"],
+    supportedFeatures: ["Text generation", "Chat", "Code generation", "Function calling", "Vision (select models)", "Streaming"],
+    openAiCompatible: "yes",
+    rateLimitNotes: "Usage is billed against monthly free credits. After free credits are used, standard per-token pricing applies.",
+    exampleUseCase: "Build a chatbot powered by Grok-2 — minimal code changes from an existing OpenAI project by just changing the base URL and API key.",
+    starterSteps: [
+      "Sign up at https://console.x.ai/",
+      "Create an API key in the xAI console",
+      "Install the OpenAI SDK: npm install openai",
+      "Set base URL to https://api.x.ai/v1 and use your xAI API key",
+      "Follow the quickstart at https://docs.x.ai/docs/quickstart"
+    ],
+    pros: [
+      "Free monthly credits — no credit card initially required",
+      "OpenAI-compatible — easy migration from existing OpenAI code",
+      "Access to Grok-2 and other Grok models",
+      "Vision capabilities on select models",
+      "Simple setup if you know the OpenAI SDK"
+    ],
+    limitations: [
+      "Free monthly credits are limited — production use requires payment",
+      "Smaller model selection compared to OpenAI or Hugging Face",
+      "Newer provider — API and model lineup still evolving",
+      "Credit amount may change — check official pricing"
+    ],
+    sourceUrls: [
+      "https://docs.x.ai/docs",
+      "https://x.ai/api",
+      "https://docs.x.ai/docs/quickstart"
+    ],
+    lastVerified: "2025-06-01"
   }
 ];
