@@ -72,11 +72,10 @@ export default function ArApiDetailPage({ params }: Props) {
     .filter((a) => a.id !== api.id && a.bestFor.some((b) => api.bestFor.includes(b)))
     .slice(0, 3);
 
-  const links = [
+  const secondaryLinks = [
     { label: "الموقع الرسمي", url: api.officialWebsite },
     { label: "التوثيق", url: api.docsUrl },
     ...(api.pricingUrl ? [{ label: "الأسعار / الطبقة المجانية", url: api.pricingUrl }] : []),
-    ...(api.apiKeyUrl ? [{ label: "احصل على مفتاح API", url: api.apiKeyUrl }] : []),
   ];
 
   return (
@@ -92,6 +91,26 @@ export default function ArApiDetailPage({ params }: Props) {
         </div>
         <h1 className="text-3xl font-bold text-white mb-3">{api.name}</h1>
         <p className="text-lg text-[#7d94b5] leading-relaxed">{api.beginnerSummary}</p>
+        {api.apiKeyUrl && (
+          <div className="flex flex-wrap gap-3 mt-5">
+            <a
+              href={api.apiKeyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
+            >
+              احصل على مفتاح API ←
+            </a>
+            <a
+              href={api.docsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#111827] hover:bg-[#1a2234] text-white font-semibold px-5 py-2.5 rounded-xl border border-[#1e2d45] transition-colors text-sm"
+            >
+              التوثيق الرسمي
+            </a>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -162,7 +181,18 @@ export default function ArApiDetailPage({ params }: Props) {
         <div className="space-y-4">
           <QuickFactsAr api={api} />
           <div className="flex flex-col gap-2">
-            {links.map((link) => (
+            {api.apiKeyUrl && (
+              <a
+                href={api.apiKeyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between bg-emerald-950/50 border border-emerald-800/60 hover:border-emerald-600 rounded-xl px-4 py-3 text-sm font-semibold text-emerald-300 transition-colors group"
+              >
+                <span>احصل على مفتاح API</span>
+                <span className="text-emerald-600 group-hover:text-emerald-400 text-xs truncate max-w-[150px] mr-2">{api.apiKeyUrl}</span>
+              </a>
+            )}
+            {secondaryLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.url}

@@ -46,6 +46,26 @@ export default function ApiDetailPage({ params }: Props) {
         </div>
         <h1 className="text-3xl font-bold text-white mb-3">{api.name}</h1>
         <p className="text-lg text-[#7d94b5] leading-relaxed">{api.beginnerSummary}</p>
+        {api.apiKeyUrl && (
+          <div className="flex flex-wrap gap-3 mt-5">
+            <a
+              href={api.apiKeyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
+            >
+              Get API Key →
+            </a>
+            <a
+              href={api.docsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#111827] hover:bg-[#1a2234] text-white font-semibold px-5 py-2.5 rounded-xl border border-[#1e2d45] transition-colors text-sm"
+            >
+              View Docs
+            </a>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
