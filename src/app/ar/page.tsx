@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { apis } from "@/data/apis";
 import { guides } from "@/data/guides";
-import ApiCard from "@/components/ApiCard";
+import FeaturedApis from "@/components/FeaturedApis";
 import GuideCard from "@/components/GuideCard";
 
 export default function ArHomePage() {
-  const featuredApis = apis.filter((a) => a.beginnerDifficulty === "easy").slice(0, 3);
   const featuredGuides = guides.slice(0, 4);
 
   return (
@@ -40,28 +38,16 @@ export default function ArHomePage() {
         </div>
       </section>
 
-      {/* Featured APIs */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl font-bold text-white">ابدأ من هنا</h2>
-            <p className="text-[#7d94b5] mt-1">APIs مناسبة للمبتدئين مع خطط مجانية حقيقية</p>
-          </div>
-          <Link href="/ar/apis" className="text-sm text-indigo-400 hover:underline">عرض الكل ←</Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {featuredApis.map((api) => <ApiCard key={api.id} api={api} locale="ar" />)}
-        </div>
-      </section>
+      <FeaturedApis locale="ar" />
 
       {/* Guides */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-[#1e2d45]">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl font-bold text-white">أدلة المبتدئين</h2>
-            <p className="text-[#7d94b5] mt-1">كل ما تحتاج لفهم AI APIs</p>
+            <p className="text-[#8bacc9] mt-1">كل ما تحتاج لفهم AI APIs</p>
           </div>
-          <Link href="/ar/guides" className="text-sm text-indigo-400 hover:underline">عرض الكل ←</Link>
+          <Link href="/ar/guides" className="text-sm text-indigo-400 hover:text-indigo-300 hover:underline transition-colors">عرض الكل ←</Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {featuredGuides.map((g) => <GuideCard key={g.id} guide={g} locale="ar" />)}
@@ -72,7 +58,7 @@ export default function ArHomePage() {
       <section className="py-16 border-t border-[#1e2d45]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-white mb-2">لماذا تثق بهذا الدليل؟</h2>
-          <p className="text-[#7d94b5] mb-10">بنينا هذا الموقع للمبتدئين الذين يستحقون معلومات صادقة ودقيقة.</p>
+          <p className="text-[#8bacc9] mb-10">بنينا هذا الموقع للمبتدئين الذين يستحقون معلومات صادقة ودقيقة.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { title: "مصادر رسمية فقط", desc: "كل API مدرج يرتبط بالموقع الرسمي للمزوّد والتوثيق الرسمي." },
@@ -82,7 +68,7 @@ export default function ArHomePage() {
             ].map((item) => (
               <div key={item.title} className="bg-[#111827] border border-[#1e2d45] rounded-2xl p-5">
                 <div className="font-semibold text-white mb-1">{item.title}</div>
-                <div className="text-sm text-[#7d94b5]">{item.desc}</div>
+                <div className="text-sm text-[#8bacc9]">{item.desc}</div>
               </div>
             ))}
           </div>
