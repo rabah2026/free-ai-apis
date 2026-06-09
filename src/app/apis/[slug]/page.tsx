@@ -52,7 +52,7 @@ export default function ApiDetailPage({ params }: Props) {
               href={api.apiKeyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-300 text-sm shadow-lg shadow-emerald-950/50"
             >
               Get API Key →
             </a>

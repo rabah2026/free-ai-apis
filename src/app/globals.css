@@ -8,7 +8,7 @@
   --surface-2: #1a2234;
   --border: #1e2d45;
   --text: #e8f0fe;
-  --muted: #7d94b5;
+  --muted: #8bacc9;
   --accent: #818cf8;
 }
 
@@ -18,9 +18,14 @@ html {
 
 body {
   background-color: #0a0d14;
+  /* Subtle dot-grid texture — adds depth without distraction */
+  background-image: radial-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 28px 28px;
   color: #e8f0fe;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
 }
 
 * {

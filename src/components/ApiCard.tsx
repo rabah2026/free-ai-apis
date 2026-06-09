@@ -12,7 +12,7 @@ export default function ApiCard({ api, locale = "en" }: Props) {
 
   return (
     <Link href={href} className="block group">
-      <article className="bg-[#111827] border border-[#1e2d45] rounded-2xl p-5 h-full flex flex-col gap-3 hover:border-[#2a3f5f] transition-colors">
+      <article className="bg-[#111827] border border-[#1e2d45] rounded-2xl p-5 h-full flex flex-col gap-3 hover:border-indigo-900/60 hover:shadow-[0_0_32px_-6px_rgba(99,102,241,0.18)] transition-all duration-300">
         <div className="flex items-start justify-between gap-3">
           <h3 className="font-bold text-white group-hover:text-indigo-300 transition-colors leading-tight">{api.name}</h3>
           <ApiBadge variant="freeTier" value={api.freeTierType} locale={locale} />

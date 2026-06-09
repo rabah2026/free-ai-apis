@@ -14,7 +14,7 @@ export default function OfficialLinks({ api }: Props) {
           href={api.apiKeyUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-between bg-emerald-950/50 border border-emerald-800/60 hover:border-emerald-600 rounded-xl px-4 py-3 text-sm font-semibold text-emerald-300 transition-colors group"
+          className="flex items-center justify-between bg-emerald-950/50 border border-emerald-800/60 hover:border-emerald-500/70 hover:shadow-[0_0_20px_-4px_rgba(16,185,129,0.2)] rounded-xl px-4 py-3 text-sm font-semibold text-emerald-300 transition-all duration-300 group"
         >
           <span>Get API Key</span>
           <span className="text-emerald-600 group-hover:text-emerald-400 transition-colors text-xs truncate max-w-[200px] ml-2">{api.apiKeyUrl}</span>

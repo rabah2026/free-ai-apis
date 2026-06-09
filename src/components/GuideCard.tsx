@@ -12,7 +12,7 @@ export default function GuideCard({ guide, locale = "en" }: Props) {
 
   return (
     <Link href={href} className="block group">
-      <article className="bg-[#111827] border border-[#1e2d45] rounded-2xl p-5 hover:border-[#2a3f5f] transition-colors h-full">
+      <article className="bg-[#111827] border border-[#1e2d45] rounded-2xl p-5 hover:border-indigo-900/60 hover:shadow-[0_0_32px_-6px_rgba(99,102,241,0.18)] transition-all duration-300 h-full">
         <div className="text-xs text-[#4a6080] mb-2">{readingLabel}</div>
         <h3 className="font-bold text-white group-hover:text-indigo-300 transition-colors mb-2">{title}</h3>
         <p className="text-sm text-[#7d94b5] leading-relaxed">{summary}</p>
